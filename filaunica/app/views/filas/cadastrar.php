@@ -4,8 +4,7 @@
 <body style="background-color:#DCDCDC">
     <div class="container" style="margin-top: 90px;">  
 
-
-
+    
     <?php 
     //==================FLASH MENSAGEM DE ERRO============================
     echo flash('fila-erro'); 
@@ -525,17 +524,32 @@
         <!-- ===============FECHA LINHA PARA TODO O CONTEÚDO============= -->
          
 
-        <!--BOTÃO ENVIAR DADOS-->
+        <?php if($data['cadastroDuplicado']) : ?>
+            <!--BOTÃO ENVIAR DADOS-->
         <div class="row mb-2">            
-            <input 
-                type="submit" 
+            <button 
                 class="btn btn-success btn-block btn-lg" 
-                value="Enviar dados" 
-                name="btn_enviar"                            
-            >       
+                name="btn_enviar"  
+                type="submit"
+                value="confirmaDuplicado">
+                Confirmar cadastro duplicado
+            </button>
         </div>
         <!--BOTÃO ENVIAR DADOS-->
-
+        <?php else: ?>
+        
+        <!--BOTÃO ENVIAR DADOS-->
+        <div class="row mb-2">            
+            <button 
+                class="btn btn-success btn-block btn-lg" 
+                name="btn_enviar"  
+                type="submit"
+                value="confirma">
+                Enviar dados
+            </button>
+        </div>
+        <!--BOTÃO ENVIAR DADOS-->
+        <? endif ?>
 
     </form>
     </div>

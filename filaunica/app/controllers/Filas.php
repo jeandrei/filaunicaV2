@@ -35,6 +35,9 @@
 
                 // Sanitize POST data
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+
+                
                 
                 $data = [
                     'bairros' => $bairros,
@@ -69,7 +72,8 @@
                     'certidao_err' => '',
                     'opcao_turno_err' => ''
                     ];
-                    
+                                 
+                                        
                     
                 //checkbox não manda valor no post se não for marcado
                 //por isso tem que verificar se foi marcado
@@ -108,15 +112,26 @@
                 //valida nome
                 if(empty($data['nome'])){
                     $data['nome_err'] = 'Por favor informe o nome da criança';
-                }/* SE DESEJAR IMPEDIR O CADASTRO COM MESMO NOME E DATA DE NASCIMENTO DA CRIANÇA DESCOMENTE AS LINHAS ABAIXO
+                }/* SE DESEJAR IMPEDIR O CADASTRO COM MESMO NOME E DATA DE NASCIMENTO DA CRIANÇA DESCOMENTE AS LINHAS ABAIXO*/
                 else{
                     if ($this->filaModel->nomeCadastrado($data['nome'],$data['nascimento']))
                     {
-                        $data['nome_err'] = 'Já existe um cadastro com esse nome e data de nascimento!';            
+                        $data['nome_err'] = 'Já existe um cadastro com esse nome e data de nascimento!';
+                        
+                        if($_POST['btn_enviar'] == "confirmaDuplicado"){
+                            $confirmaDuplicado = true;
+                            $data['nome_err'] = '';
+                        } else {
+                            flash('fila-erro','Ops! Já existe um cadastro com esse nome e data de nascimento! Deseja confirmar?','alert alert-warning');
+                            $data['cadastroDuplicado'] = true;
+                            $confirmaDuplicado = false;
+                        }  
+
                     }else{
-                        $data['nome_err'] = '';   
+                        $data['nome_err'] = '';  
+                        $confirmaDuplicado = true; 
                     }
-                }*/
+                }
 
                 //valida nascimento
                 if(empty($data['nascimento'])){        
@@ -190,7 +205,8 @@
                     empty($data['bairro_err']) && 
                     empty($data['rua_err']) && 
                     empty($data['opcao1_err']) && 
-                    empty($data['opcao_turno_err'])                    
+                    empty($data['opcao_turno_err']) &&
+                    $confirmaDuplicado                   
                 ){
                 
                 $data['protocolo'] = $this->filaModel->generateProtocol();
@@ -214,8 +230,7 @@
                 if($data['unidade3'] = $this->filaModel->getEscolasById($data['opcao3']))
                 {
                     $data['unidade3'] = $this->filaModel->getEscolasById($data['opcao3']);    
-                } 
-
+                }             
                 
                 //gravo no banco de dados para depois pegar os dados do protocolo 
                 $this->filaModel->register($data);               
