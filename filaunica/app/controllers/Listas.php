@@ -13,9 +13,9 @@
 
         public function listachamada(){
             
-            if((!isLoggedIn())){ 
+          /*   if((!isLoggedIn())){ 
                 redirect('users/login');
-            } 
+            }  */
             
             $this->view('listas/listachamada');
         }

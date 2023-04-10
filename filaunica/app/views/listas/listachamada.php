@@ -45,7 +45,7 @@ class PDF extends FPDF
             //AddPage('P') RETRATO AddPage('L') PAISAGEM
             //$pdf->AddPage('L');            
             $pdf->SetFont('Arial','B',8);
-            $colunas =array("Pos", "Registro", "Responsável pelo cadastro", "Iniciais da Criança", "Nascimento", "Etapa", "Protocolo");
+            $colunas =array("Pos", "Registro", "Responsável pelo cadastro", "Iniciais da Criança", "Nascimento", "Protocolo");
             //largura das colunas
             $larguracoll = array(1 => 10, 2 => 40, 3 => 120, 4 => 30, 5 => 20, 6 => 25, 7 => 35);
             $tam_fonte = 10;    
@@ -56,58 +56,44 @@ class PDF extends FPDF
             //pega as etapas
             $etapas = $this->etapaModel->getEtapas();
 
-           
-           
+            
+            
            
             //para cada etapa que retornar no banco de dados
-            foreach($etapas as $etapa){ 
-                
-                //se existir registros na etapa com status aguardando 1 é a situação aguardando
-                if($registros = $this->filaModel->getFilaPorEtapaRelatorio($etapa['id']))
-                {   //guarda os registros na variável registros
-                    $registros = $this->filaModel->getFilaPorEtapaRelatorio($etapa['id']);                                    
-                }
-                else
-                {
-                    $registros = NULL;
+            foreach($etapas as $etapa){                
+                $pdf->AddPage('L');
+                $pdf->SetFont('Arial','B',12);
+                $pdf->Cell(0, 5,utf8_decode("Listagem " . $etapa['descricao']), 0, 1, "C");
+                $pdf->Ln(10);   
+                $i=0;
+                foreach($colunas as $coluna){
+                    $i++;
+                    $pdf->SetFont('Arial','B',8);                   
+                    $pdf->Cell($larguracoll[$i],$tam_fonte,utf8_decode($coluna),1);
                 }
 
-                //se tiver valores em registro vai imprimir todas as linhas da etapa lá do foreach
-                if($registros <> NULL ){
-                    //adiciona uma nova pagina
-                    $pdf->AddPage('L');
-                    //SETA A FONTE PARA TAMANHO 8 NEGRITO
-                    $pdf->SetFont('Arial','B',12);
-                    $pdf->Cell(0, 5,utf8_decode("Listagem " . $etapa['descricao']), 0, 1, "C");                    
-                    $i=0;
-                    
-                    foreach($colunas as $coluna){
-                        $i++;
-                        $pdf->SetFont('Arial','B',8);                   
-                        $pdf->Cell($larguracoll[$i],$tam_fonte,utf8_decode($coluna),1);
-                    }
-
-                    foreach($registros as $row) {       
-                        $pdf->SetFont('Arial','',8);        
-                        $pdf->Ln();
-                        $i=0;
-                        foreach($row as $column){
-                            $i++;   
-                            //se a coluna for a de número 3 quer dizer que é o nome então executa a função iniciais
-                            if($i == 4){
-                                $pdf->Cell($larguracoll[$i],$tam_fonte,utf8_decode(iniciais($column)),1);
-                            }
-                            else
-                            {
-                                $pdf->Cell($larguracoll[$i],$tam_fonte,utf8_decode($column),1); 
-                            }
-                        }
+                $registros = $this->filaModel->classificacaoPorEtapa($etapa['id']);
+                                       
+                                
+                if($registros){
+                    foreach($registros as $row) {  
+                        $pdf->Ln();                                            
+                        $pdf->Cell($larguracoll[1],$tam_fonte,utf8_decode($row->posicao  . 'º'),1);
+                        $pdf->Cell($larguracoll[2],$tam_fonte,utf8_decode( date('d/m/Y H:i:s', strtotime($row->registro))),1);
+                        $pdf->Cell($larguracoll[3],$tam_fonte,utf8_decode($row->responsavel),1);
+                        $pdf->Cell($larguracoll[4],$tam_fonte,utf8_decode(iniciais($row->nomecrianca)),1);
+                        $pdf->Cell($larguracoll[5],$tam_fonte,utf8_decode(formatadata($row->nascimento)),1);
+                        $pdf->Cell($larguracoll[6],$tam_fonte,utf8_decode($row->protocolo),1);
+                        
                     } 
+                } else {
+                    die('Sem daos para emitir');
                 }
-                else
-                {
-                    $error = "Sem dados para emitir";
-                }    
+                
+
+                
+
+               
 
             }//END FOREACH 
 
@@ -126,4 +112,3 @@ class PDF extends FPDF
                 
             }            
 ?>
-

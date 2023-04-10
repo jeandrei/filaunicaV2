@@ -383,6 +383,60 @@
                 return false;
             }
         }
+
+
+
+        public function getSituacaoQueFicamNaFila(){
+            $this->db->query('SELECT * FROM situacao s WHERE ativonafila = 1');
+            $result = $this->db->resultSet(); 
+            return $result;  
+        }
+              
+        public function classificacaoPorEtapa($etapa_id){
+            $situacoes = $this->getSituacaoQueFicamNaFila();
+            $sql = ' 
+                    SELECT 
+                    @rownum := @rownum + 1 as posicao,
+                    f.registro,
+                    f.responsavel,
+                    f.nomecrianca,
+                    f.nascimento,                                
+                    f.protocolo                                
+                    
+                    FROM 
+                            fila f ,
+                            (select @rownum := 0) r 
+                    WHERE 
+                            f.nascimento >= (SELECT etapa.data_ini FROM etapa WHERE etapa.id = :etapa_id)
+                    AND 
+                            f.nascimento <= (SELECT etapa.data_fin FROM etapa WHERE etapa.id = :etapa_id)
+                                                 
+            ';
+            //pega somente as situações ativonafila = 1
+            if($situacoes){
+                $sql.= ' AND ';
+                foreach($situacoes as $key=>$situacao){
+                    
+                    if($key == 0){
+                        $sql .= '(f.situacao_id = ' . $situacao->id;
+                    } else {
+                        $sql .= ' OR f.situacao_id = ' . $situacao->id;
+                    }                      
+                }
+                
+                $sql .= ')';
+               
+            } else {
+                return false;
+            }
+
+            $this->db->query($sql);
+
+            $this->db->bind(':etapa_id',$etapa_id);
+            $result = $this->db->resultSet(); 
+            return $result;  
+        }  
+
          
               
 
