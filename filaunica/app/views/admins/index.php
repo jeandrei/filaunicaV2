@@ -249,10 +249,10 @@ h1 {
 
         <div class="col-md-6 align-self-end mt-2" style="padding-left:5;">
            
-                <input type="submit" class="btn btn-primary" value="Atualizar">                   
+                <input type="submit" class="btn btn-primary" value="Atualizar" onClick="salfTab()">                   
                 <input type="button" class="btn btn-primary" value="Limpar" onClick="limpar()"> 
                 <input type="submit" name="botao" class="btn btn-primary" value="Imprimir" onClick="newtab()">
-                                                       
+                                                      
         </div>
                                     
                                     
@@ -472,6 +472,10 @@ toggles.forEach(toggle => {
 
     function newtab(){
       document.getElementById('filtrar').setAttribute('target', '_blank');
+    }
+
+    function salfTab(){
+      document.getElementById('filtrar').setAttribute('target', '_self');
     }
 </script>
 
