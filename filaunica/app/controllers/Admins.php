@@ -56,7 +56,7 @@
                   $data['results'][] = [
                     'id' => $result['id'],
                     'posicao' =>  ($this->filaModel->buscaPosicaoFila($result['protocolo'])) ? $this->filaModel->buscaPosicaoFila($result['protocolo']) : "-",
-                    'etapa' => ($this->etapaModel->getEtapaDescricao($result['nascimento'])) ? $this->etapaModel->getEtapaDescricao($result['nascimento']) : "FORA DAS ETAPAS",
+                    'etapa' => ($this->etapaModel->getEtapaDescricao($result['nascimento'])) ? $this->etapaModel->getEtapaDescricao($result['nascimento']) : "FE",
                     'nomecrianca' => $result['nomecrianca'],
                     'nascimento' => date('d/m/Y', strtotime($result['nascimento'])),
                     'responsavel' => $result['responsavel'],

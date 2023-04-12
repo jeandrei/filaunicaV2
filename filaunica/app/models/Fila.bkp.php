@@ -436,40 +436,23 @@
             $result = $this->db->resultSet(); 
             return $result;  
         }  
+
          
               
 
         //FUNÇÃO QUE EXECUTA A SQL PAGINATE
         //quando for para relatório usar getFilaBusca($relatorio=true,$page=NULL,$options)
-        public function getFilaBusca($relatorio,$page,$options){
+        public function getFilaBusca($relatorio,$page,$options){          
             
-            $sql = "SELECT *,  (SELECT descricao FROM etapa WHERE fila.nascimento>=data_ini AND fila.nascimento<=data_fin) as etapa FROM fila";
+            $sql = "SELECT *,  (SELECT descricao FROM etapa WHERE fila.nascimento>=data_ini AND fila.nascimento<=data_fin) as etapa FROM fila";           
+            
 
-            // SE A SITUAÇÃO É FE eu pego todos os registros cuja etapa é NULL            
+            // SE A SITUAÇÃO É FE eu pego todos os registros cuja etapa é NULL e a situação é 1 Aguardando           
             if(($options['named_params'][':situacao_id']) == "FE"){
-                
-                // pego as situações que o cadastro permanece na fila
-                $situacoes = $this->getSituacaoQueFicamNaFila();
-                
-                //monto a sql com base nas situações que permanece na fila
-                if($situacoes){
-                    $sql.= " WHERE ";
-                    foreach($situacoes as $key=>$situacao){
-                        
-                        if($key == 0){
-                            $sql .= " (fila.situacao_id = " . $situacao->id;
-                        } else {
-                            $sql .= " OR fila.situacao_id = " . $situacao->id;
-                        }                      
-                    }
-                    
-                    $sql .= ") AND (SELECT descricao FROM etapa WHERE fila.nascimento>=data_ini AND fila.nascimento<=data_fin) IS NULL";
-                //se nenhuma situação permanece na fila o que é só em casos de testes ou início da implantação do sistema, eu busco por situação id = null que não vai ter nenhum registro, se ninguém fica na fila não posso mostrar ninguém no caso de nenhuma situação for ativa na fila
-                } else {
-                    $sql.= " WHERE (fila.situacao_id = NULL)";
-                }               
+                $sql .= " WHERE fila.situacao_id = 1 AND (SELECT descricao FROM etapa WHERE fila.nascimento>=data_ini AND fila.nascimento<=data_fin) IS NULL";
+            }
             // SE A ETAPA É IGUAL A TODOS EU CLOCO O COMANDO WHERE FILA.ID QUE TRAZ TODOS OS REGISTROS
-            } elseif ( 
+            elseif( 
                 (($options['named_params'][':etapa_id']) === "Todos")||(($options['named_params'][':etapa_id']) === NULL) ||
                 (($options['named_params'][':etapa_id']) === "")
                 )
@@ -477,15 +460,15 @@
                 $sql .= " WHERE fila.id";
             } else {
                 // SE FOR DIFERENTE DE TODOS QUER DIZER QUE O USUÁRIOS SELECIONOU ALGUM OUTRO VALOR DAÍ EU MONTO A SQL
-                $sql .= " WHERE (SELECT id FROM etapa WHERE fila.nascimento>=etapa.data_ini AND fila.nascimento<=etapa.data_fin) = " . $options['named_params'][':etapa_id']; 
+                $sql .= " WHERE (SELECT id FROM etapa WHERE fila.nascimento>=etapa.data_ini AND fila.nascimento<=etapa.data_fin) = " . $options['named_params'][':etapa_id'];          
+               
             }
 
-            /* SE FOR INFORMADO O NOME */
             if(!empty($options['named_params'][':nome'])){
                 $sql .= " AND nomecrianca LIKE " . "'%" . $options['named_params'][':nome'] . "%'";
             }
+          
 
-            /* SE FOR INFORMADO A SITUAÇÃO */
             if(
                 (($options['named_params'][':situacao_id']) <> "Todos") && 
                 (($options['named_params'][':situacao_id']) <> NULL) && (($options['named_params'][':situacao_id']) <> "FE"))
@@ -493,24 +476,24 @@
                 $sql .= " AND situacao_id = " . "'" . $options['named_params'][':situacao_id'] ."'";
             }    
             
-            //SE SELECIONOU UMA ESCOLA ORDENO PELA PRIMEIRA OPÇÃO DE ESCOLA
+            //Se selecionou uma escola eu ordeno pela primeira opção da escola
             if((($options['named_params'][':escola_id']) <> "Todos") && (($options['named_params'][':situacao_id']) <> "FE")){
                 $sql .= " AND (opcao1_id = " . "'" . $options['named_params'][':escola_id'] ."'";
                 $sql .= " OR opcao2_id = " . "'" . $options['named_params'][':escola_id'] ."'";
                 $sql .= " OR opcao3_id = " . "'" . $options['named_params'][':escola_id'] ."')";
                 $sql .= " ORDER BY registro, opcao1_id ASC"; 
             } else {
-                //CASO CONTRÁRIO ORDENO PELO REGISTRO SEMPRE
+                //caso contrário eu ordeno pelo registro sempre
                 $sql .= " ORDER BY registro ASC"; 
             }    
             
             
-            /* CASO SEJA INFORMADO O PROTOCOLO EU REMONTO TODA A SQL BUSCANDO PELO PROTOCOLO */
             if(($options['named_params'][':protocolo']) <> ""){
                 $sql = "SELECT *,  (SELECT descricao FROM etapa WHERE fila.nascimento>=data_ini AND fila.nascimento<=data_fin) as etapa FROM fila WHERE protocolo = " . $options['named_params'][':protocolo'];                      
             }
+            //var_dump($sql);
             
-            /* POR FIM SE MANDO PARA RELATÓRIO OU PARA A QUERY */            
+
             if($relatorio == false){
                 $paginate = new pagination($page, $sql, $options);
                 return  $paginate;
@@ -519,10 +502,9 @@
                 $result = $this->db->resultSet();                          
                 return  $result;
             }
-
-            
-        }//public function getFilaBusca  
-
+           
+           
+        }         
 
 
         
