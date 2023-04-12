@@ -502,6 +502,36 @@
   }
 
 
+  public function analiseDeRegistrosDuplicados(){
+    $duplicados = $this->filaModel->getDuplicados();
+   
+    $indiciDuplicado = 0;
+    if($duplicados){
+      foreach($duplicados as $row){
+        $indiciDuplicado++;
+        $registrosDuplicados = $this->filaModel->getRegistroByNomeNascimento($row->nomecrianca, $row->nascimento);
+        foreach($registrosDuplicados as $registro){
+          $data[] = array(
+            'id' => $registro->id,
+            'indiceDuplicado' => $indiciDuplicado,
+            'protocolo' => $registro->protocolo,
+            'posicao' =>  ($this->filaModel->buscaPosicaoFila($registro->protocolo)) ? $this->filaModel->buscaPosicaoFila($registro->protocolo) : "-",
+            'nomecrianca' => $registro->nomecrianca,
+            'nascimento' => $registro->nascimento, 
+            'responsavel' => $registro->responsavel,
+            'cpfresponsavel' => $registro->cpfresponsavel,
+            'logradouro' => $registro->logradouro,           
+            'registro' => $registro->registro 
+          );         
+        }
+      }
+    } else {
+      die('Sem cadastros duplicados no momento.');
+    }
+    $this->view('analiseduplicados/index',$data);
+  }
+
+
 
 
 

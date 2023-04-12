@@ -346,6 +346,6 @@
             $data['etapas'] = $this->filaModel->getEtapas();           
             $this->view('filas/listachamada', $data);
 
-        }    
+        }           
 
     }

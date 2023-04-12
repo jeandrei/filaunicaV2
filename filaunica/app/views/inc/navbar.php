@@ -16,9 +16,22 @@
                     <li class="nav-item">
                       <a class="nav-link" href="<?php echo URLROOT; ?>/pages/about">Sobre</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="<?php echo URLROOT; ?>/admins">Fila</a>
+                    
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Registros
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
+                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/admins">Fila de Espera</a> 
+                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/admins/analiseDeRegistrosDuplicados">Análise de Registros Duplicados</a>
+                        </div>
                     </li>
+
+
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Relatórios

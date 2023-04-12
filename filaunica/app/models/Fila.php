@@ -287,6 +287,12 @@
 
 
         function buscaPosicaoFila($protocolo) {
+
+            /* SE NÃO TIVER NENHUMA SITUAÇÃO ATIVA NA FILA RETORNO SAF SEM ATIVO NA FILA */
+            if(!$this->getSituacaoQueFicamNaFila()){
+                return 'SAF - ';
+            }
+
             $this->db->query(' 
             SELECT 
                     count(fila.id) as posicao,
@@ -315,7 +321,7 @@
             //var_dump($row);
                     
             if($row->ativo == 0){
-                return 'NSA - ';
+                return false;
             } elseif($row->ativo == 1 && $row->posicao > 0){
                 return $row->posicao . 'º';  
             }else{
@@ -388,8 +394,13 @@
 
         public function getSituacaoQueFicamNaFila(){
             $this->db->query('SELECT * FROM situacao s WHERE ativonafila = 1');
-            $result = $this->db->resultSet(); 
-            return $result;  
+            $result = $this->db->resultSet();             
+            
+            if($this->db->rowCount() > 0){
+                return $result;
+            } else {
+                return false;
+            }       
         }
               
         public function classificacaoPorEtapa($etapa_id){
@@ -690,6 +701,73 @@
             $this->db->bind(':obs_admin',$data);                        
             if($this->db->execute()){
                 return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function getDuplicados(){
+            $situacoes = $this->getSituacaoQueFicamNaFila();
+            $sql = "SELECT 		
+                            f.nomecrianca ,
+                            COUNT(f.nomecrianca) AS nRep,
+                            f.nascimento ,
+                            COUNT(f.nascimento) 
+                    FROM 
+                            fila f ";
+
+            //pega somente as situações ativonafila = 1
+            if($situacoes){
+                $sql.= ' WHERE ';
+                foreach($situacoes as $key=>$situacao){
+                    
+                    if($key == 0){
+                        $sql .= '(f.situacao_id = ' . $situacao->id;
+                    } else {
+                        $sql .= ' OR f.situacao_id = ' . $situacao->id;
+                    }                      
+                }
+                
+                $sql .= ')';
+            
+            } 
+
+            $sql .= " GROUP BY
+                            f.nomecrianca ,
+                            f.nascimento 
+                    HAVING 
+                            COUNT(f.nomecrianca) > 1 
+                    AND
+                            COUNT(f.nascimento) > 1" ;
+            
+            $this->db->query($sql); 
+            $result = $this->db->resultSet();           
+            if($this->db->rowCount() > 0){
+                return $result;
+            } else {
+                return false;
+            }
+        }
+
+
+        public function getRegistroByNomeNascimento($nome, $nascimento){
+            $this->db->query('SELECT 
+                                    *
+                            FROM 
+                                    fila f 
+                            WHERE 
+                                    f.nomecrianca = :nome
+                            AND 	
+                                    f.nascimento = :nascimento
+                            ORDER BY 
+                                    f.registro
+                            ASC');
+            // Bind value
+            $this->db->bind(':nome', $nome);
+            $this->db->bind(':nascimento', $nascimento);
+            $result = $this->db->resultSet();           
+            if($this->db->rowCount() > 0){
+                return $result;
             } else {
                 return false;
             }
