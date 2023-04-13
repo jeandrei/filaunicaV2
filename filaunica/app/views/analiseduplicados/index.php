@@ -48,11 +48,13 @@
 
 <script>
 
+/* delete a linha da tabela sem relação com o banco de dados */
 function deleteRow(btn) {
   var row = btn.parentNode.parentNode;
   row.parentNode.removeChild(row);
 }
 
+/* retorna os dados de um registro do banco de dados para o javascript */
 function getRegistro(id){    
   $.ajax({
     url: `<?php echo URLROOT; ?>/filas/getRegistro/${id}`,
@@ -69,28 +71,28 @@ function getRegistro(id){
    
     
    
-    
-   function remover(rowToDelete,id) {
-
-      let registro = getRegistro(id);      
-      
-      const confirma = confirm(`Tem certeza que deseja excluir o protocolo ${registro.protocolo} da criança ${registro.nomecrianca}?`);
-      if(confirma){
-        $.ajax({  
-            url: `<?php echo URLROOT; ?>/filas/delete/${id}`,                
-            method:'POST',
-            success: function(retorno_php){                     
-                var responseObj = JSON.parse(retorno_php); 
-                if(responseObj.error == false){
-                  deleteRow(rowToDelete);
-                } else {
-                  alert(responseObj.message);
-                }
-                                
-            }     
-        });//Fecha o ajax      
-      }      
-    }
+// Remove um registro da fila e remove a linha da tabela   
+function remover(rowToDelete,id) {
+  //pego o registro a partir do id lá do banco de dados
+  let registro = getRegistro(id);      
+  
+  const confirma = confirm(`Tem certeza que deseja excluir o protocolo ${registro.protocolo} da criança ${registro.nomecrianca}?`);
+  if(confirma){
+    $.ajax({  
+        url: `<?php echo URLROOT; ?>/filas/delete/${id}`,                
+        method:'POST',
+        success: function(retorno_php){                     
+            var responseObj = JSON.parse(retorno_php); 
+            if(responseObj.error == false){
+              deleteRow(rowToDelete);
+            } else {
+              alert(responseObj.message);
+            }
+                            
+        }     
+    });//Fecha o ajax      
+  }      
+}
 
   
 </script>
