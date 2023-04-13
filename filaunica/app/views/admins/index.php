@@ -417,7 +417,7 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
 <script>
     
 
-const toggles = document.querySelectorAll('.faq-toggle')
+const toggles = document.querySelectorAll('.faq-toggle');
 
 toggles.forEach(toggle => {
     toggle.addEventListener('click', () => {

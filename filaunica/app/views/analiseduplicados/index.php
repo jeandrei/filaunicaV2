@@ -1,23 +1,89 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
- <table class="table table-sm">
-  <thead>
-    <tr>
-      <th scope="col">Posição</th>
-      <th scope="col">Registro</th>
-      <th scope="col">Protocolo</th>
-      <th scope="col">Nome</th>
-      <th scope="col">Nascimento</th>
-      <th scope="col">Responsavel</th>
-      <th scope="col">CPF do Responsavel</th>
-      <th scope="col">Logradouro</th>      
-      <th scope="col">Situação</th> 
-      <th scope="col">Ações</th>      
-    </tr>
-  </thead>
-  <tbody>
+<style>
+  * {
+    box-sizing: border-box;
+  }
   
-  <?php $currentDuplicado = 0; $cores = ['table-active','table-primary','table-success','table-danger','table-warning','table-info','table-light',]; $currentCor = 0;?>
+  .coluna{
+    float: left;
+    padding: 10px;    
+    height: 50px;
+    border: 1px solid #D3D3D3;      
+  }
+
+  .coluna-20{
+    width: 20px;
+  }
+
+  .coluna-50{
+    width: 50px;
+  }
+
+  .coluna-60{
+    width: 60px;
+  }
+ 
+  .coluna-100{
+    width: 100px;
+  }
+
+  .coluna-110{
+    width: 141px;
+  }
+
+  .coluna-120{
+    width: 120px;
+  }  
+
+  .coluna-150{
+    width: 150px;
+  }
+
+  .coluna-200{
+    width: 200px;
+  }   
+
+  .coluna-400{
+    width: 400px;
+  }
+
+ 
+  .linha:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .label{
+    margin-left:3px;
+    height:14px; 
+    font-size:12px;
+  }
+
+  .valor{
+    font-size:15px;
+    margin-left:3px;
+  }
+
+  .sublinha{    
+    display: none;
+    clear: both;
+  }
+
+  .sublinha.active {
+    display: block;      
+  }
+
+  .sublinha .coluna{   
+    background-color: #DCDCDC;
+  }
+
+ 
+</style>
+ 
+  
+  <?php $currentDuplicado = 0; $cores = ['#ff0000','#8000ff','#00bfff','#ffbf00','#ffff00','#80ff00','#4d4d4d']; $currentCor = 0;?>
   <?php foreach($data as $row) : ?>
     <?php 
           if($currentDuplicado <> $row['indiceDuplicado']){
@@ -28,22 +94,91 @@
             }
           } 
     ?>
-    <tr class="<?php echo $cores[$currentCor];?>" style="font-size: 12px;">
-      <th scope="row"><?php echo $row['posicao'];?></th>
-      <td><?php echo $row['registro'];?></td>
-      <td><?php echo $row['protocolo'];?></td>
-      <td><?php echo $row['nomecrianca'];?></td>
-      <td><?php echo $row['nascimento'];?></td>
-      <td><?php echo $row['responsavel'];?></td>
-      <td><?php echo $row['cpfresponsavel'];?></td>
-      <td><?php echo $row['logradouro'];?></td>      
-      <td><?php echo $row['situacao'];?></td>  
-      <td><button type='button' class='btn btn-danger' onClick=remover(this,<?php echo $row['id'];?>)>Remover</button></td>
-    </tr> 
+    <!-- cada linha -->
+    <div class="linha" style="border-left: 10px solid <?php echo $cores[$currentCor];?>">
+      
+      <div class="coluna coluna-50">      
+        <button type='button' class='btn btn-info btn-sm faq-toggle'><i class="fa fa-eye"></i></button>
+      </div> 
+
+      <div class="coluna coluna-50">      
+        <button type='button' class='btn btn-danger btn-sm' onClick=remover(this,<?php echo $row['id'];?>)><i class="fa fa-trash" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="coluna coluna-10">
+        <div class="label">Posição:</div>
+        <div class="valor"><?php echo $row['posicao'];?></div>
+      </div> 
+      
+      <div class="coluna coluna-200">
+        <div class="label">Registro:</div>
+        <div class="valor"><?php echo $row['registro'];?></div>
+      </div>
+
+      <div class="coluna coluna-120">
+        <div class="label">Protocolo:</div>
+        <div class="valor"><?php echo $row['protocolo'];?></div>
+      </div>
+      
+      <div class="coluna coluna-400">
+        <div class="label">Nome:</div>
+        <div class="valor"><?php echo $row['nomecrianca'];?></div>
+      </div>
+
+      <div class="coluna coluna-100">
+        <div class="label">Nascimento:</div>
+        <div class="valor"><?php echo $row['nascimento'];?></div>
+      </div>
+
+      <div class="coluna coluna-100">
+        <div class="label">Situação:</div>
+        <div class="valor"><?php echo $row['situacao'];?></div>
+      </div>
+      
+     
+
+     <div class="sublinha">
+
+        <div class="coluna coluna-150">
+          <div class="label">CPF Resp:</div>
+          <div class="valor"><?php echo $row['cpfresponsavel'];?></div>
+        </div>
+
+        <div class="coluna coluna-400">
+          <div class="label">Responsavel:</div>
+          <div class="valor"><?php echo $row['responsavel'];?></div>
+        </div>
+
+        <div class="coluna coluna-400">
+          <div class="label">Logradouro:</div>
+          <div class="valor"><?php echo $row['logradouro'];?></div>
+        </div>
+
+        <div class="coluna coluna-110">
+          <div class="label">Celular:</div>
+          <div class="valor"><?php echo $row['celular'];?></div>
+        </div>
+
+      </div> 
+       
+    </div>
+    <!-- fim da linha -->
+
   <?php endforeach;?>   
   </tbody>
 </table>
 <?php require APPROOT . '/views/inc/footer.php'; ?>
+
+<script>
+  const toggles = document.querySelectorAll('.faq-toggle');
+
+  toggles.forEach(toggle => {
+      toggle.addEventListener('click', () => {
+          toggle.parentNode.parentNode.lastElementChild.classList.toggle('active');          
+      })
+  });
+
+</script>
 
 
 <script>

@@ -760,6 +760,7 @@
                                     f.cpfresponsavel,
                                     f.logradouro,
                                     f.registro,
+                                    f.celular,
                                     s.descricao
                             FROM 
                                     fila f,

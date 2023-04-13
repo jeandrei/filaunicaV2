@@ -522,6 +522,7 @@
             'cpfresponsavel' => $registro->cpfresponsavel,
             'logradouro' => $registro->logradouro,           
             'registro' => formatadatempo($registro->registro),
+            'celular' => $registro->celular,
             'situacao' => $registro->descricao
           );         
         }
