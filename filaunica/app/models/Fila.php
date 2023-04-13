@@ -752,10 +752,21 @@
 
         public function getRegistroByNomeNascimento($nome, $nascimento){
             $this->db->query('SELECT 
-                                    *
+                                    f.id as id,
+                                    f.protocolo,
+                                    f.nomecrianca,
+                                    f.nascimento,
+                                    f.responsavel,
+                                    f.cpfresponsavel,
+                                    f.logradouro,
+                                    f.registro,
+                                    s.descricao
                             FROM 
-                                    fila f 
+                                    fila f,
+                                    situacao s
                             WHERE 
+                                    f.situacao_id = s.id
+                            AND
                                     f.nomecrianca = :nome
                             AND 	
                                     f.nascimento = :nascimento
@@ -771,6 +782,25 @@
             } else {
                 return false;
             }
+        }
+
+        public function delete($id){
+            $this->db->query('DELETE from fila WHERE id=:id');
+            $this->db->bind(':id',$id);                                         
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            } 
+        }
+
+
+        public function getRegistroById($id){
+            $sql = 'SELECT * FROM fila f WHERE id = :id';
+            $this->db->query($sql);            
+            $this->db->bind(':id',$id);
+            $result = $this->db->single();
+            return $result;
         }
         
     

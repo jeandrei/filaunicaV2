@@ -187,6 +187,11 @@ function CalculaIdade($data){
 function formatadata($data){  
     $result = date('d/m/Y', strtotime($data));    
     return $result;
-  }
+}
+
+function formatadatempo($data){  
+    $result = date('d/m/Y H:i:s', strtotime($data));    
+    return $result;
+}
 
 ?>

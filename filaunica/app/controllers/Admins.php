@@ -517,11 +517,12 @@
             'protocolo' => $registro->protocolo,
             'posicao' =>  ($this->filaModel->buscaPosicaoFila($registro->protocolo)) ? $this->filaModel->buscaPosicaoFila($registro->protocolo) : "-",
             'nomecrianca' => $registro->nomecrianca,
-            'nascimento' => $registro->nascimento, 
+            'nascimento' => formatadata($registro->nascimento), 
             'responsavel' => $registro->responsavel,
             'cpfresponsavel' => $registro->cpfresponsavel,
             'logradouro' => $registro->logradouro,           
-            'registro' => $registro->registro 
+            'registro' => formatadatempo($registro->registro),
+            'situacao' => $registro->descricao
           );         
         }
       }

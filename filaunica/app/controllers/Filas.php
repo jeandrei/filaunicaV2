@@ -346,6 +346,52 @@
             $data['etapas'] = $this->filaModel->getEtapas();           
             $this->view('filas/listachamada', $data);
 
-        }           
+        }  
+        
+        
+        public function delete($id){
+
+            if((!isLoggedIn())){                
+                redirect('users/login');
+            } 
+
+            $registro = $this->filaModel->getRegistroById($id);
+            $registrosIguais = $this->filaModel->getRegistroByNomeNascimento($registro->nomecrianca,$registro->nascimento);
+            $numRegistros = count($registrosIguais);
+
+            //só permito remover se tem mais de um registro igual
+            if($numRegistros > 1){
+                try{
+
+                    if($this->filaModel->delete($id)){                        
+                        $json_ret = array(                                            
+                                            'error'=>false
+                                        );                     
+                        
+                        echo json_encode($json_ret); 
+                    }     
+                } catch (Exception $e) {
+                    $json_ret = array(
+                            'classe'=>'alert alert-danger', 
+                            'message'=>'Erro ao tentar excluir os dados.',
+                            'error'=>$data
+                            );                     
+                    echo json_encode($json_ret); 
+                }
+            } else {
+                $json_ret = array(
+                    'classe'=>'alert alert-danger', 
+                    'message'=>'Ops! Existe apenas um registro para esse cadastro.',
+                    'error'=>$data
+                    );                     
+            echo json_encode($json_ret); 
+            }              
+        }
+
+
+        public function getRegistro($id){
+            $registro = $this->filaModel->getRegistroById($id);
+            echo json_encode($registro);
+        }
 
     }
