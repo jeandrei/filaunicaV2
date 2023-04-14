@@ -381,7 +381,7 @@
             } else {
                 $json_ret = array(
                     'classe'=>'alert alert-danger', 
-                    'message'=>'Ops! Existe apenas um registro para esse cadastro.',
+                    'message'=>'Ops! Existe apenas um registro para este cadastro.',
                     'error'=>$data
                     );                     
             echo json_encode($json_ret); 

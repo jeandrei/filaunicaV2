@@ -8,6 +8,58 @@
             $this->db = new Database;
         }
 
+
+
+        // Registra Situação
+        public function register($data){
+            $this->db->query('INSERT INTO situacao (descricao, cor, ativonafila) VALUES (:descricao, :cor, :ativonafila)');
+            // Bind values
+            $this->db->bind(':descricao',$data['situacao']);
+            $this->db->bind(':cor',$data['cor']);
+            $this->db->bind(':ativonafila',$data['ativo']);            
+
+            // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Update Situacao
+        public function update($data){
+            
+            $this->db->query('UPDATE situacao SET descricao = :descricao, cor = :cor, ativonafila = :ativonafila WHERE id = :id');
+            // Bind values
+            $this->db->bind(':id',$data['id']);
+            $this->db->bind(':descricao',$data['situacao']);   
+            $this->db->bind(':ativonafila',$data['ativo']);         
+            $this->db->bind(':cor',$data['cor']);            
+
+            // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+         // Deleta situacao por id
+         public function delSituacaoByid($id){
+            $this->db->query('DELETE FROM situacao WHERE id = :id');
+            // Bind value
+            $this->db->bind(':id', $id);
+
+            $row = $this->db->execute();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
        
 
         
@@ -56,8 +108,27 @@
                 return false;
             }
         }
+
+        //Traz a situação pelo id
+        public function getSituacaoByid($id){
+            $this->db->query('SELECT * FROM situacao WHERE id = :id');          
+            $this->db->bind(':id',$id);  
+            $situacao =$this->db->single();  
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return $situacao;
+            } else {
+                return false;
+            }
+        }
     
     }
+
+
+    
+
+
 
        
 ?>
