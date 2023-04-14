@@ -22,26 +22,18 @@
     <tbody>
         <?php foreach($data as $row) : ?>
             <tr class="text-center">
-                <td><?php echo $row['situacao'];?></td>
+                <td><?php echo $row['descricao'];?></td>
                 <td><?php echo $row['ativo'];?></td>
                 <td style="background-color:<?php echo $row['cor'];?>;"></td>
                                  
                 <td>
                     <a 
-                        href="<?php echo URLROOT; ?>/situacoes/edit/<?php echo $row['situacaoId']; ?>" class="fa fa-edit btn btn-success pull-right btn-sm">Editar
+                        href="<?php echo URLROOT; ?>/situacoes/edit/<?php echo $row['id']; ?>" class="fa fa-edit btn btn-success pull-right btn-sm">Editar
                     </a>
                 
                     <a 
-                        href="<?php echo URLROOT; ?>/situacoes/delete/<?php echo $row['situacaoId'];?>" 
+                        href="<?php echo URLROOT; ?>/situacoes/delete/<?php echo $row['id'];?>" 
                         class="fa fa-remove btn btn-danger pull-left btn-sm"
-                        onclick="if(question('Tem certeza que deseja remover o registro?') == true)
-                                {
-                                    document.forms[0].submit();
-                                }
-                                else
-                                {										
-                                    return false;
-                                }"                       
                     >                        
                         Remover
                     </a>

@@ -12,17 +12,17 @@
                 <!--situacao-->        
                 <div class="form-group">  
                     <label 
-                        for="situacao"><b class="obrigatorio">*</b> Situação: 
+                        for="descricao"><b class="obrigatorio">*</b> Situação: 
                     </label>                        
                     <input 
                         type="text" 
-                        name="situacao" 
-                        id="situacao" 
-                        class="form-control <?php echo (!empty($data['situacao_err'])) ? 'is-invalid' : ''; ?>"                             
-                        value="<?php echo htmlout($data['situacao']);?>"
+                        name="descricao" 
+                        id="descricao" 
+                        class="form-control <?php echo (!empty($data['descricao_err'])) ? 'is-invalid' : ''; ?>"                             
+                        value="<?php echo htmlout($data['descricao']);?>"
                     >
                     <span class="text-danger">
-                        <?php echo $data['situacao_err']; ?>
+                        <?php echo $data['descricao_err']; ?>
                     </span>
                 </div>
                 <!-- situacao -->

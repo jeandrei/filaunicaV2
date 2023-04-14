@@ -14,7 +14,7 @@
         public function register($data){
             $this->db->query('INSERT INTO situacao (descricao, cor, ativonafila) VALUES (:descricao, :cor, :ativonafila)');
             // Bind values
-            $this->db->bind(':descricao',$data['situacao']);
+            $this->db->bind(':descricao',$data['descricao']);
             $this->db->bind(':cor',$data['cor']);
             $this->db->bind(':ativonafila',$data['ativo']);            
 
@@ -32,7 +32,7 @@
             $this->db->query('UPDATE situacao SET descricao = :descricao, cor = :cor, ativonafila = :ativonafila WHERE id = :id');
             // Bind values
             $this->db->bind(':id',$data['id']);
-            $this->db->bind(':descricao',$data['situacao']);   
+            $this->db->bind(':descricao',$data['descricao']);   
             $this->db->bind(':ativonafila',$data['ativo']);         
             $this->db->bind(':cor',$data['cor']);            
 
@@ -45,7 +45,7 @@
         }
 
          // Deleta situacao por id
-         public function delSituacaoByid($id){
+         public function delete($id){
             $this->db->query('DELETE FROM situacao WHERE id = :id');
             // Bind value
             $this->db->bind(':id', $id);

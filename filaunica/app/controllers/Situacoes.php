@@ -15,8 +15,8 @@
 
             foreach($situacoes as $row){
                 $data[] = array(
-                  'situacaoId' => $row->id,
-                  'situacao' => $row->descricao, 
+                  'id' => $row->id,
+                  'descricao' => $row->descricao, 
                   'ativo' => $row->ativonafila == 1 ? 'SIM' : 'NÃO',
                   'cor' => $row->cor
                 );       
@@ -43,10 +43,10 @@
 
                 //init data
                 $data = [
-                    'situacao' => trim($_POST['situacao']),
+                    'descricao' => trim($_POST['descricao']),
                     'ativo' => trim($_POST['ativo']),
                     'cor' => trim($_POST['cor']),                    
-                    'situacao_err' => '',
+                    'descricao_err' => '',
                     'ativo_err' => '',
                     'cor_err' => ''
                 ];                
@@ -54,8 +54,8 @@
                 
 
                 // Valida Situação
-                if(empty($data['situacao'])){
-                    $data['situacao_err'] = 'Por favor informe a Situação';
+                if(empty($data['descricao'])){
+                    $data['descricao_err'] = 'Por favor informe a Situação';
                 } 
 
                 // Valida se é ativo ou não na fila               
@@ -71,7 +71,7 @@
                 
                 // Make sure errors are empty
                 if(                    
-                    empty($data['situacao_err']) &&
+                    empty($data['descricao_err']) &&
                     empty($data['ativo_err']) && 
                     empty($data['cor_err'])
                     ){
@@ -79,7 +79,7 @@
                         try {
                                 if($this->situacaoModel->register($data)){
                                     flash('message', 'Cadastro realizado com sucesso!');                     
-                                    $this->view('situacoes/index',$data);
+                                    $this->view('situacoes/new');
                                 } else {
                                     throw new Exception('Ops! Algo deu errado ao tentar gravar os dados!');
                                 }
@@ -124,10 +124,10 @@
                 //init data
                 $data = [
                     'id' => $id,
-                    'situacao' => trim($_POST['situacao']),
+                    'descricao' => trim($_POST['descricao']),
                     'ativo' => trim($_POST['ativo']),
                     'cor' => trim($_POST['cor']),                    
-                    'situacao_err' => '',
+                    'descricao_err' => '',
                     'ativo_err' => '',
                     'cor_err' => ''
                 ];                
@@ -135,8 +135,8 @@
                 
 
                 // Valida Situação
-                if(empty($data['situacao'])){
-                    $data['situacao_err'] = 'Por favor informe a Situação';
+                if(empty($data['descricao'])){
+                    $data['descricao_err'] = 'Por favor informe a Situação';
                 } 
 
                 // Valida se é ativo ou não na fila               
@@ -152,7 +152,7 @@
                 
                 // Make sure errors are empty
                 if(                    
-                    empty($data['situacao_err']) &&
+                    empty($data['descricao_err']) &&
                     empty($data['ativo_err']) && 
                     empty($data['cor_err'])
                     ){
@@ -187,13 +187,49 @@
 
                 $data = [
                     'id' => $id,
-                    'situacao' => $situacao->descricao,
+                    'descricao' => $situacao->descricao,
                     'ativo' => $situacao->ativonafila,                                      
                     'cor' => $situacao->cor                  
                 ];
                 // Load view
                 $this->view('situacoes/edit', $data);
             } 
+        }
+
+        public function delete($id){            
+           
+            //VALIDAÇÃO DO ID
+            if(!is_numeric($id)){
+               $erro = 'ID Inválido!'; 
+            } else if (!$data = $this->situacaoModel->getSituacaoById($id)){
+                $erro = 'ID inexistente';
+            }
+
+            if($erro){
+                flash('message', $erro , 'alert alert-danger'); 
+                $this->view('situacoes/index');
+                exit();
+            }  
+            
+            //esse $_POST['delete'] vem lá do view('confirma');
+            if(isset($_POST['delete'])){
+                try {
+                    if($this->situacaoModel->delete($id)){
+                        flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
+                        redirect('situacoes/index');
+                    } else {
+                        throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
+                    }
+                } catch (Exception $e) {
+                    $erro = 'Erro: '.  $e->getMessage(). "\n";
+                    flash('message', $erro,'alert alert-danger');
+                    $this->view('situacoes/index');
+                }                
+           } else {   
+            $this->view('situacoes/confirma',$data);
+            exit();
+           }  
+
         }
 
 }   
