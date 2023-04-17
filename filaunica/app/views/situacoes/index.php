@@ -9,7 +9,7 @@
         </a>
     </div>
  </div> 
- <?php flash('register_success');?>
+ <?php flash('message');?>
 <table class="table table-striped">
     <thead>
         <tr class="text-center">      
@@ -42,11 +42,4 @@
         <?php endforeach; ?>   
     </tbody>
 </table>
-
-<?php require APPROOT . '/views/situacoes/modalconfirma.php'; ?>
-<div class="col-md-6"> 
-        <button type="button" id="btnAdicionar" class="fa fa-remove btn btn-danger pull-left btn-sm" data-toggle="modal" data-target="#modalConfirma">
-        <i class="fa fa-pencil"></i>Remover</button> 
-</div>
-
 <?php require APPROOT . '/views/inc/footer.php'; ?>
