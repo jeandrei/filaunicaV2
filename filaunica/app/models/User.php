@@ -10,6 +10,7 @@
 
         // Register User
         public function register($data){
+           
             $this->db->query('INSERT INTO users (name, email, password, type) VALUES (:name, :email, :password, :type)');
             // Bind values
             $this->db->bind(':name',$data['name']);
@@ -99,11 +100,11 @@
         public function getUsers(){
             $this->db->query('SELECT * FROM users');            
 
-            return $this->db->resultSet();
+            $result = $this->db->resultSet();
 
             // Check row
             if($this->db->rowCount() > 0){
-                return true;
+                return $result;
             } else {
                 return false;
             }
@@ -115,11 +116,26 @@
             
             $this->db->bind(':id', $id_user);
 
-            return $this->db->single();
+            $result = $this->db->single();
 
             // Check row
             if($this->db->rowCount() > 0){
-                return true;
+                return $result;
+            } else {
+                return false;
+            }
+        }
+
+
+        // Verifica se tem ao menos um usuário admin no banco
+        public function existeUserAdmin(){
+            $this->db->query("SELECT COUNT(id) as qtd FROM users WHERE type = 'admin'");            
+
+            $result = $this->db->single();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return $result->qtd;
             } else {
                 return false;
             }

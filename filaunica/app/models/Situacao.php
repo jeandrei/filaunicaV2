@@ -154,11 +154,11 @@
         public function getSituacoes(){
             $this->db->query('SELECT * FROM situacao');          
            
-            return $this->db->resultSet();
+            $result = $this->db->resultSet();  
 
             // Check row
             if($this->db->rowCount() > 0){
-                return true;
+                return $result ;
             } else {
                 return false;
             }

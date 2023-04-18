@@ -9,17 +9,20 @@
 
             if($_SESSION[DB_NAME . '_user_type'] != "admin"){
                 redirect('index');
-            } else if($data = $this->userModel->getUsers()){  
-                $this->view('users/userslist', $data);
-            } else {                
-                flash('register_success', 'Falha ao carregar a lista de usuários!', 'alert alert-danger'); 
-                $this->view('users/userslist', $data=0);
+                die();
+            }             
+            
+            
+            if($data = $this->userModel->getUsers()){  
+                $this->view('users/index', $data);                
+            }  else {                
+                die('Falha! Nenhum usuário encontrado cadastrado!');
             }
             
            
         }
 
-        public function new(){    
+        public function new(){                
            
             if((!isLoggedIn())){ 
                 redirect('users/login');
@@ -33,13 +36,13 @@
                 // Sanitize POST data
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 
-                /*
+                
                 if (isset($_POST['type']) && ($_POST['type'] == 1)){
                     $type = "admin";
                 } else {
                     $type = "user";
                 }
-                */
+                
 
 
                 //init data
@@ -106,7 +109,7 @@
                       if($this->userModel->register($data)){
                         // Cria a menságem antes de chamar o view va para 
                         // views/users/login a segunda parte da menságem
-                        flash('register_success', 'Usuário registrado com sucesso!');                        
+                        flash('message', 'Usuário registrado com sucesso!');                        
                         redirect('users/userlist');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -215,7 +218,7 @@
                       if($this->userModel->update($data)){
                         // Cria a menságem antes de chamar o view va para 
                         // views/users/login a segunda parte da menságem                        
-                        flash('register_success', 'Usuário atualizado com sucesso!');                                                                   ;
+                        flash('message', 'Usuário atualizado com sucesso!');                                                                   ;
                         redirect('users/userlist');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -251,38 +254,53 @@
             } 
         }
 
-
-        public function delete($id){ 
-
-            if((!isLoggedIn())){ 
-                redirect('users/login');
-            } 
-            
-            if($_SESSION[DB_NAME . '_user_type'] != "admin"){
-                redirect('index');
-            } else if ($this->userModel->getUserById($id)){
-                $this->userModel->delUserByid($id); 
-            } else {
-                $data['erro'] = "Não foi possível excluir o usuário com este id";
-            }
-            
-            if($data = $this->userModel->getUsers()){
-                $data = $this->userModel->getUsers();
-            } else {
-                $data['erro'] = "Falha ao carregar a lista de usuários";
-            }
-
+        public function delete($id){              
+           //die('user ' . $_SESSION[DB_NAME . '_user_id']);
            
+            //se não for um id válido
+            if(!is_numeric($id)){
+               $erro = 'ID Inválido!'; 
+            // se no id não existir
+            } else if (!$data = $this->userModel->getUserById($id)){
+               $erro = 'ID inexistente';
+            //se o usuário estiver tentando excluir seu próprio registro
+            } else if($_SESSION[DB_NAME . '_user_id'] == $id){            
+            $erro = 'Você não pode excluir seu próprio usuário!';
+            //não precisaria dessa linha mas é garantia que pelo menos um usuário administrador fique no bd
+            } else if ($data->type == 'admin'){ 
+                $qtdAdmins = $this->userModel->existeUserAdmin();
+                if($qtdAdmins < 2){
+                    $erro = 'Existe apenas um administrador cadastrado! Cadastre um novo administrador para ralizar esta exclusão.';
+                } 
+            }           
+           
+           //esse $_POST['delete'] vem lá do view('confirma');
+           if(isset($_POST['delete'])){           
+               
+               if($erro){
+                   flash('message', $erro , 'alert alert-danger'); 
+                   $data = $this->userModel->getUsers();   
+                   $this->view('users/index',$data);
+                   die();
+               }                   
 
-            if(empty($data['erro'])){
-                    flash('register_success', 'Usuário removido com sucesso!');  
-                    $this->view('users/userslist', $data);
-                }
-                 else {
-                    flash('register_success', $data['erro'], 'alert alert-danger');
-                    $this->view('users/userslist', $data); 
-                 }
-        }
+               try {                    
+                   if($this->userModel->delUserByid($id)){
+                       flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
+                       redirect('users/index');
+                   } else {
+                       throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
+                   }
+               } catch (Exception $e) {
+                   $erro = 'Erro: '.  $e->getMessage(). "\n";
+                   flash('message', $erro,'alert alert-danger');
+                   $this->view('users/index');
+               }                
+          } else { 
+           $this->view('users/confirma',$data);
+           exit();
+          }                 
+       }       
             
 
         public function login(){          

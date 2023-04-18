@@ -1,7 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php';?>
 <div class="row">
     <div class="col-md-6 mx-auto">
-    <?php flash('register_success');?>
+    <?php flash('message');?>
     <a href="<?php echo URLROOT; ?>/users" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Back</a>
         <div class="card card-body bg-ligth mt-5">
             <h2>Registrar um usuário</h2>

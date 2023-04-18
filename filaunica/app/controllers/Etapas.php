@@ -267,19 +267,14 @@
                     flash('message', $erro,'alert alert-danger');
                     $this->view('etapas/index');
                 }                
-           } else {          
+           } else {  
+            //se existe protocolos na fila dessa etapa aviso o usuário        
             if($this->etapaModel->etapaRegFila($id)){
                 $data['alerta'] = 'Alerta.: Existem registros na fila vinculados a esta etapa!';                   
             }            
             $this->view('etapas/confirma',$data);
             exit();
-           }             
-          
-            
-            
-           /*  $data = $this->etapaModel->getAllEtapas();
-            $this->view('etapas/index', $data);   */   
-            
+           }                 
         }
 }   
 ?>
