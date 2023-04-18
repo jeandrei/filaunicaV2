@@ -520,7 +520,7 @@
             if(($options['named_params'][':protocolo']) <> ""){
                 $sql = "SELECT *,  (SELECT descricao FROM etapa WHERE fila.nascimento>=data_ini AND fila.nascimento<=data_fin) as etapa FROM fila WHERE protocolo = " . $options['named_params'][':protocolo'];                      
             }
-            
+                       
             /* POR FIM SE MANDO PARA RELATÓRIO OU PARA A QUERY */            
             if($relatorio == false){
                 $paginate = new pagination($page, $sql, $options);

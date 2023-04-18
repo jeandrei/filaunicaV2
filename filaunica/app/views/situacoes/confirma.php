@@ -8,6 +8,8 @@
         
         <div class="form-group">
             <p>Você deseja realmente excluir a Situação <strong><?php echo $data->descricao; ?>?</strong></p>
+            <p>Todos os protocolos com a situação <?php echo $data->descricao; ?> serão <strong>ARQUIVADOS.</strong></p>
+            <p>Só execute esta ação se você realmente sabe o que está fazendo.</p>
         </div>  
         
         <div class="form-group mt-3">

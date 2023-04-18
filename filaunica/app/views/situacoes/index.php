@@ -25,7 +25,8 @@
                 <td><?php echo $row['descricao'];?></td>
                 <td><?php echo $row['ativo'];?></td>
                 <td style="background-color:<?php echo $row['cor'];?>;"></td>
-                                 
+                
+                <?php if($row['descricao'] <> 'Arquivado') :?>
                 <td>
                     <a 
                         href="<?php echo URLROOT; ?>/situacoes/edit/<?php echo $row['id']; ?>" class="fa fa-edit btn btn-success pull-right btn-sm">Editar
@@ -38,6 +39,7 @@
                         Remover
                     </a>
                 </td>
+                <?php endif; ?>
             </tr>
         <?php endforeach; ?>   
     </tbody>

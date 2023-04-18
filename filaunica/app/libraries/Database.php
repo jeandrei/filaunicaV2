@@ -13,6 +13,7 @@
     protected $pass = DB_PASS;
     protected $dbname = DB_NAME;
     protected $options;
+    public    $lastId;
 
     //toda vez que preparamos um a sql vamos usar o dbh
     protected $dbh;
@@ -68,7 +69,13 @@
 
     //Execute the prepared statemant
     public function execute(){
-        return $this->stmt->execute();
+        if($this->stmt->execute()){
+            $this->lastId = $this->dbh->lastInsertId();            
+            return true;
+        } else {
+            return false;
+        }
+       
     }
 
     //Get result set as array of objects $dados->nome

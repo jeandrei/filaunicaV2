@@ -44,8 +44,63 @@
             }
         }
 
-         // Deleta situacao por id
-         public function delete($id){
+        public function getIdSituacaoArquivado(){
+            $this->db->query("SELECT id FROM situacao WHERE descricao = 'Arquivado'");
+            $situacaoArquivado = $this->db->single();
+            if($this->db->rowCount() > 0){
+                return $situacaoArquivado->id;
+            } else {
+                return false;
+            }
+        }
+
+        public function criaSituacaoArquivado(){
+            $this->db->query("INSERT INTO situacao (descricao, cor) VALUES ('Arquivado', '#898c8a')");
+            // Execute
+            if($this->db->execute()){                
+                return $this->db->lastId; 
+            } else {
+                return false;
+            }
+        }
+
+        
+
+        public function arquivaProtocolos($situacaoId){
+            //pega a o id da situação arquivado
+            $situacaoArquivadoId = $this->getIdSituacaoArquivado();
+            //se não tem a situação arquivado crio ela e retorno o id
+            if(!$situacaoArquivadoId){
+              $situacaoArquivadoId = $this->criaSituacaoArquivado();
+            } 
+            
+            $sql = "UPDATE fila SET situacao_id = $situacaoArquivadoId WHERE situacao_id = :situacao_id";
+            $this->db->query($sql);            
+            $this->db->bind(':situacao_id',$situacaoId);  
+            
+            if($this->db->execute()){
+                return true; 
+            } else {
+                return false;
+            }
+        }
+
+        
+
+        // Deleta situacao por id
+        public function delete($id){
+            
+            //não permito a exclusão da situação Arquivado
+            if($this->getDescricaoSituacaoById($id) == 'Arquivado'){
+                return false;
+            }
+            
+            //se não conseguir arquivar os protocolos retorno falso
+            if(!$this->arquivaProtocolos($id)){
+                return false;
+            }
+           
+            //caso não seja a situação arquivado e tenha arquivado todos os protocolos eu removo a situação
             $this->db->query('DELETE FROM situacao WHERE id = :id');
             // Bind value
             $this->db->bind(':id', $id);
@@ -58,7 +113,7 @@
             } else {
                 return false;
             }
-        }
+        }       
 
        
 
