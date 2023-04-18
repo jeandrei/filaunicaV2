@@ -20,6 +20,7 @@
         </tr>
     </thead>
     <tbody>
+    <?php if($data['etapas']) : ?>
         <?php foreach($data['etapas'] as $etapa) : ?>
             <tr class="text-center">
                 <td><?php echo $etapa->descricao;?></td>
@@ -40,7 +41,14 @@
 
                 </td>
             </tr>
-        <?php endforeach; ?>   
+        <?php endforeach; ?>  
+    <?php else: ?> 
+        <tr>
+            <td colspan="6" class="text-center">
+                Nenhuma etapa cadastrada
+            </td>
+        </tr>
+    <?php endif; ?>
     </tbody>
 </table>
 <?php require APPROOT . '/views/inc/footer.php'; ?>

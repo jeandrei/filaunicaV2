@@ -17,9 +17,8 @@
             
             if($data['etapas'] = $this->etapaModel->getAllEtapas()){                
                 $this->view('etapas/index', $data);
-            } else {                
-                flash('message', 'Falha ao carregar a lista de etapas!', 'alert alert-danger'); 
-                $this->view('etapas/index', $data=0);
+            } else {                                 
+                $this->view('etapas/index');
             }   
         }
 
