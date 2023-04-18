@@ -15,10 +15,10 @@
                 redirect('index');
             } 
             
-            if($data = $this->etapaModel->getAllEtapas()){                
+            if($data['etapas'] = $this->etapaModel->getAllEtapas()){                
                 $this->view('etapas/index', $data);
             } else {                
-                flash('register_success', 'Falha ao carregar a lista de etapas!', 'alert alert-danger'); 
+                flash('message', 'Falha ao carregar a lista de etapas!', 'alert alert-danger'); 
                 $this->view('etapas/index', $data=0);
             }   
         }
@@ -88,7 +88,7 @@
                       if($this->etapaModel->register($data)){
                         // Cria a menságem antes de chamar o view va para 
                         // views/users/login a segunda parte da menságem
-                        flash('register_success', 'Etapa registrada com sucesso!');                        
+                        flash('message', 'Etapa registrada com sucesso!');                        
                         redirect('etapas/index');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -99,7 +99,7 @@
                     } else {
                       // Load the view with errors
                       if(!empty($data['erro'])){
-                      flash('register_success', $data['erro'], 'alert alert-danger');
+                      flash('message', $data['erro'], 'alert alert-danger');
                       }
                       $this->view('etapas/newetapa', $data);
                     }               
@@ -198,7 +198,7 @@
                       // Update User
                       if($this->etapaModel->update($data)){                         
                         // views/users/login a segunda parte da menságem                       
-                        flash('register_success', 'Etapa atualizada com sucesso!');                        
+                        flash('message', 'Etapa atualizada com sucesso!');                        
                         redirect('etapas/index');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -209,7 +209,7 @@
                     } else {
                       // Load the view with errors
                       if(!empty($data['erro'])){
-                      flash('register_success', $data['erro'], 'alert alert-danger');
+                      flash('message', $data['erro'], 'alert alert-danger');
                       }
                       $this->view('etapas/editetapa', $data);
                     }               
@@ -236,30 +236,49 @@
         }
 
 
-        public function delete($id){ 
+        public function delete($id){              
 
-            if((!isLoggedIn())){ 
-                redirect('users/login');
-            } 
-           
-            if($_SESSION[DB_NAME . '_user_type'] != "admin"){
-                redirect('index');
-            }  
+             //VALIDAÇÃO DO ID
+             if(!is_numeric($id)){
+                $erro = 'ID Inválido!'; 
+            } else if (!$data['etapa'] = $this->etapaModel->getEtapaById($id)){
+                $erro = 'ID inexistente';
+            }     
+            
+             //esse $_POST['delete'] vem lá do view('confirma');
+            if(isset($_POST['delete'])){
+                
+                if($erro){
+                    flash('message', $erro , 'alert alert-danger'); 
+                    $data['etapas'] = $this->etapaModel->getAllEtapas();   
+                    $this->view('etapas/index',$data);
+                    die();
+                }                   
 
+                try {                    
+                    if($this->etapaModel->delEtapaByid($id)){
+                        flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
+                        redirect('etapas/index');
+                    } else {
+                        throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
+                    }
+                } catch (Exception $e) {
+                    $erro = 'Erro: '.  $e->getMessage(). "\n";
+                    flash('message', $erro,'alert alert-danger');
+                    $this->view('etapas/index');
+                }                
+           } else {          
             if($this->etapaModel->etapaRegFila($id)){
-                $data['erro'] = 'Existem registros na fila vinculados a esta etapa!';                   
-            }
-                     
-            if(empty($data['erro'])){
-                $this->etapaModel->delEtapaByid($id); 
-                flash('register_success', 'Etapa removida com sucesso!');                
-            } else {
-                flash('register_success', $data['erro'], 'alert alert-danger');
-            }    
+                $data['alerta'] = 'Alerta.: Existem registros na fila vinculados a esta etapa!';                   
+            }            
+            $this->view('etapas/confirma',$data);
+            exit();
+           }             
+          
             
             
-            $data = $this->etapaModel->getAllEtapas();
-            $this->view('etapas/index', $data);     
+           /*  $data = $this->etapaModel->getAllEtapas();
+            $this->view('etapas/index', $data);   */   
             
         }
 }   

@@ -213,6 +213,7 @@
             
             //esse $_POST['delete'] vem lá do view('confirma');
             if(isset($_POST['delete'])){
+                die($id);
                 try {
                     if($this->situacaoModel->delete($id)){
                         flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
@@ -225,7 +226,7 @@
                     flash('message', $erro,'alert alert-danger');
                     $this->view('situacoes/index');
                 }                
-           } else {   
+           } else {              
             $this->view('situacoes/confirma',$data);
             exit();
            }  
