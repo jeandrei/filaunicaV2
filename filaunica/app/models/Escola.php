@@ -25,8 +25,9 @@
             }
         }
 
-        // Update Etapa
-        public function update($data){
+        // Update Escola
+        public function update($data){             
+            
             $this->db->query('UPDATE escola SET nome = :nome, bairro_id = :bairro_id, logradouro = :logradouro, numero = :numero, emAtividade = :emAtividade WHERE id = :id');
             // Bind values
             $this->db->bind(':id',$data['id']);

@@ -23,9 +23,9 @@
                         'id' => $row->id,
                         'nome' => $row->nome,
                         'bairro_id' => $row->bairro_id,
-                        'bairro' => $this->bairroModel->getBairroById($row->id)->nome,
+                        'bairro' => $this->bairroModel->getBairroById($row->bairro_id)->nome,
                         'logradouro' => $row->logradouro,                    
-                        'numero' => $row->numero,
+                        'numero' => ($row->numero) ? $row->numero : '',
                         'emAtividade' => ($row->emAtividade == 1) ? 'Sim' : 'Não'
                     ];       
                 } 
@@ -152,17 +152,19 @@
            
             // Check for POST            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-               
+                 
                 // Process form
 
                 // Sanitize POST data
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);    
 
-
+                
                 //init data
                 $data = [
+                    'id' => $id,
                     'nome' => trim($_POST['nome']),
                     'bairro_id' => $_POST['bairro_id'],
+                    'bairros' => $this->bairroModel->getBairros(),
                     'logradouro' => trim($_POST['logradouro']),                    
                     'numero' => ($_POST['numero']) ? trim($_POST['numero']) : NULL,
                     'emAtividade' => trim($_POST['emAtividade']),
@@ -170,8 +172,7 @@
                     'bairro_id_err' => '',
                     'logradouro_err' => '',                    
                     'emAtividade_err' => ''                    
-                ];                
-
+                ];      
                 
 
                 // Valida nome
@@ -185,15 +186,15 @@
                 } 
 
                 // Valida bairro
-                if(empty($data['bairro_id'])){
+                if((empty($data['bairro_id'])) || ($data['bairro_id'] == 'NULL')){                    
                     $data['bairro_id_err'] = 'Por favor informe o bairro';
                 } 
                  
 
                  // Valida emAtividade
-                 if(empty($data['emAtividade'])){
+                 if((($data['emAtividade'])=="") || ($data['emAtividade'] <> '0') && ($data['emAtividade'] <> '1')){
                     $data['emAtividade_err'] = 'Por favor informe se deseja manter a escola disponível para inscrições';
-                }              
+                }               
                
                 
                 // Make sure errors are empty
@@ -234,14 +235,15 @@
                 } 
 
                 $escola = $this->escolaModel->getEscolaByid($id);
-
+                
                 // Init data
                 $data = [
                     'id' => $id,
                     'nome' => $escola->nome,
                     'bairro_id' => $escola->bairro_id,
+                    'bairros' => $this->bairroModel->getBairros(),
                     'logradouro' => $escola->logradouro,
-                    'numero' => $escola->numero,
+                    'numero' => ($escola->numero) ? $escola->numero : '',
                     'emAtividade' => $escola->emAtividade,
                     'nome_err' => '',
                     'bairro_id_err' => '',
