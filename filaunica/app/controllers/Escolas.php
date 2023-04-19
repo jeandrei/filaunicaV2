@@ -256,14 +256,15 @@
         }       
         
 
-        public function delete($id){              
-
+        public function delete($id){             
+            
              //VALIDAÇÃO DO ID
              if(!is_numeric($id)){
                 $erro = 'ID Inválido!'; 
             } else if (!$data['escola'] = $this->escolaModel->getEscolaById($id)){
                 $erro = 'ID inexistente';
-            }     
+            } 
+                  
             
              //esse $_POST['delete'] vem lá do view('confirma');
             if(isset($_POST['delete'])){
@@ -275,8 +276,9 @@
                     die();
                 }                   
 
-                try {                    
-                    if($this->escolaModel->delEscolaByid($id)){
+                try {              
+                    if($this->escolaModel->delete($id)){
+                        
                         flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
                         redirect('escolas/index');
                     } else {
@@ -290,7 +292,7 @@
            } else {  
             //se existe protocolos na fila dessa etapa aviso o usuário        
             if($this->escolaModel->escolaRegFila($id)){
-                $data['alerta'] = 'Alerta.: Existem protocolos vinculdos esta escola!';                   
+                $data['alerta'] = 'Alerta.: Existem registros na fila com a escola '.$data['escola']->nome. ' como opção! Todos os protocolos com esta escola ficarão sem esta opção!';                   
             }            
             $this->view('escolas/confirma',$data);
             exit();

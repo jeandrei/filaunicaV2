@@ -105,7 +105,42 @@
             } else {
                 return false;
             }
-        }         
+        } 
+        
+        
+
+        public function escolaRegFila($escolaId){
+            $this->db->query('SELECT * FROM fila WHERE (opcao1_id = :id) OR (opcao2_id = :id) OR (opcao3_id = :id)');   
+            $this->db->bind(':id', $escolaId);         
+
+            $result = $this->db->resultSet();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return true;
+            } else {
+                return false;
+            } 
+        }
+
+         // Deleta escola por id
+         public function delete($id){            
+            
+            $this->db->query('DELETE FROM escola WHERE id = :id');
+            // Bind value
+            $this->db->bind(':id', $id);
+
+            $row = $this->db->execute();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return true;
+            } else {
+                return false;
+            }
+        }       
+
+
 
     }//etapa
     
