@@ -55,7 +55,8 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/users">Usuários</a>
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/etapas">Etapas</a> 
-                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/situacoes">Situações</a>                                  
+                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/situacoes">Situações</a>
+                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/escolas">Escolas</a>                                  
                         </div>
                       </li>
                   <?php endif; ?>         
