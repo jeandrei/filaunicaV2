@@ -102,7 +102,7 @@
                       if($this->escolaModel->register($data)){
                         // Cria a menságem antes de chamar o view va para 
                         // views/users/login a segunda parte da menságem
-                        flash('message', 'Escola registrada com sucesso!');                        
+                        flash('message', 'Escola registrada com sucesso!','success');                        
                         redirect('escolas/index');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -113,7 +113,7 @@
                     } else {
                       // Load the view with errors
                       if(!empty($data['erro'])){
-                      flash('message', $data['erro'], 'alert alert-danger');
+                      flash('message', $data['erro'], 'error');
                       }
                       $this->view('escolas/new', $data);
                     }               
@@ -211,7 +211,7 @@
                       if($this->escolaModel->update($data)){
                         // Cria a menságem antes de chamar o view va para 
                         // views/users/login a segunda parte da menságem
-                        flash('message', 'Escola atualizada com sucesso!');                        
+                        flash('message', 'Escola atualizada com sucesso!','success');                        
                         redirect('escolas/index');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -222,7 +222,7 @@
                     } else {
                       // Load the view with errors
                       if(!empty($data['erro'])){
-                      flash('message', $data['erro'], 'alert alert-danger');
+                      flash('message', $data['erro'], 'error');
                       }
                       $this->view('escolas/edit', $data);
                     }               
@@ -270,7 +270,7 @@
             if(isset($_POST['delete'])){
                 
                 if($erro){
-                    flash('message', $erro , 'alert alert-danger'); 
+                    flash('message', $erro , 'error'); 
                     $data['escolas'] = $this->escolaModel->getEscolas();   
                     $this->view('escolas/index',$data);
                     die();
@@ -279,14 +279,14 @@
                 try {              
                     if($this->escolaModel->delete($id)){
                         
-                        flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
+                        flash('message', 'Registro excluido com sucesso!', 'success'); 
                         redirect('escolas/index');
                     } else {
                         throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
                     }
                 } catch (Exception $e) {
                     $erro = 'Erro: '.  $e->getMessage(). "\n";
-                    flash('message', $erro,'alert alert-danger');
+                    flash('message', $erro,'error');
                     $this->view('escolas/index');
                 }                
            } else {  
@@ -300,9 +300,28 @@
         }
 
         public function atualizasituacao(){ 
-           if($this->escolaModel->atualizaSituacao($_POST['escolaId'],$_POST['situacao'])){
-            echo 'tudo ok';
-           };
+
+           try{
+
+                    if($this->escolaModel->atualizaSituacao($_POST['escolaId'],$_POST['situacao'])){
+                        //para acessar esses valores no jquery
+                        //exemplo responseObj.message
+                        $json_ret = array(
+                                            'classe'=>'success', 
+                                            'message'=>'Dados gravados com sucesso',
+                                            'error'=>false
+                                        );                     
+                        
+                        echo json_encode($json_ret); 
+                    }     
+                } catch (Exception $e) {
+                    $json_ret = array(
+                            'classe'=>'error', 
+                            'message'=>'Erro ao gravar os dados',
+                            'error'=>$data
+                            );                     
+                    echo json_encode($json_ret); 
+            }
         }
 }   
 ?>

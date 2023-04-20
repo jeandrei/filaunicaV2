@@ -87,7 +87,7 @@
                       if($this->etapaModel->register($data)){
                         // Cria a menságem antes de chamar o view va para 
                         // views/users/login a segunda parte da menságem
-                        flash('message', 'Etapa registrada com sucesso!');                        
+                        flash('message', 'Etapa registrada com sucesso!','success');                        
                         redirect('etapas/index');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -98,7 +98,7 @@
                     } else {
                       // Load the view with errors
                       if(!empty($data['erro'])){
-                      flash('message', $data['erro'], 'alert alert-danger');
+                      flash('message', $data['erro'], 'error');
                       }
                       $this->view('etapas/newetapa', $data);
                     }               
@@ -197,7 +197,7 @@
                       // Update User
                       if($this->etapaModel->update($data)){                         
                         // views/users/login a segunda parte da menságem                       
-                        flash('message', 'Etapa atualizada com sucesso!');                        
+                        flash('message', 'Etapa atualizada com sucesso!','success');                        
                         redirect('etapas/index');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -208,7 +208,7 @@
                     } else {
                       // Load the view with errors
                       if(!empty($data['erro'])){
-                      flash('message', $data['erro'], 'alert alert-danger');
+                      flash('message', $data['erro'], 'error');
                       }
                       $this->view('etapas/editetapa', $data);
                     }               
@@ -248,7 +248,7 @@
             if(isset($_POST['delete'])){
                 
                 if($erro){
-                    flash('message', $erro , 'alert alert-danger'); 
+                    flash('message', $erro , 'error'); 
                     $data['etapas'] = $this->etapaModel->getAllEtapas();   
                     $this->view('etapas/index',$data);
                     die();
@@ -256,14 +256,14 @@
 
                 try {                    
                     if($this->etapaModel->delEtapaByid($id)){
-                        flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
+                        flash('message', 'Registro excluido com sucesso!', 'success'); 
                         redirect('etapas/index');
                     } else {
                         throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
                     }
                 } catch (Exception $e) {
                     $erro = 'Erro: '.  $e->getMessage(). "\n";
-                    flash('message', $erro,'alert alert-danger');
+                    flash('message', $erro,'error');
                     $this->view('etapas/index');
                 }                
            } else {  

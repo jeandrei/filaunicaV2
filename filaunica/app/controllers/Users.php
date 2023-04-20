@@ -109,7 +109,7 @@
                       if($this->userModel->register($data)){
                         // Cria a menságem antes de chamar o view va para 
                         // views/users/login a segunda parte da menságem
-                        flash('message', 'Usuário registrado com sucesso!');                        
+                        flash('message', 'Usuário registrado com sucesso!','success');                        
                         redirect('users/userlist');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -218,7 +218,7 @@
                       if($this->userModel->update($data)){
                         // Cria a menságem antes de chamar o view va para 
                         // views/users/login a segunda parte da menságem                        
-                        flash('message', 'Usuário atualizado com sucesso!');                                                                   ;
+                        flash('message', 'Usuário atualizado com sucesso!','success');                                                                   ;
                         redirect('users/userlist');
                       } else {
                           die('Ops! Algo deu errado.');
@@ -286,14 +286,14 @@
 
                try {                    
                    if($this->userModel->delUserByid($id)){
-                       flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
+                       flash('message', 'Registro excluido com sucesso!', 'success'); 
                        redirect('users/index');
                    } else {
                        throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
                    }
                } catch (Exception $e) {
                    $erro = 'Erro: '.  $e->getMessage(). "\n";
-                   flash('message', $erro,'alert alert-danger');
+                   flash('message', $erro,'error');
                    $this->view('users/index');
                }                
           } else { 

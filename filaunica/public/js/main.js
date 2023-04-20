@@ -239,3 +239,25 @@ function fileValidation(myfiel,span)
         return true;
     }
 }
+
+/* POPUP MENSAGEM */
+const types = ['info', 'success', 'error']
+
+document.addEventListener('DOMContentLoaded', function (e) {
+    //esse toasts vem lá do inc/header
+    const toasts = document.getElementById('toasts')
+})
+
+function createNotification(message = null, type = null) {
+  const notif = document.createElement('div')
+  notif.classList.add('msg')
+  notif.classList.add(type ? type : getRandomType())
+
+  notif.innerText = message ? message : getRandomMessage()
+
+  toasts.appendChild(notif)
+
+  setTimeout(() => {
+    notif.remove()
+  }, 3000)
+}

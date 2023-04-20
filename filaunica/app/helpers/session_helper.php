@@ -20,7 +20,8 @@
                 $_SESSION[$name. '_class'] = $class;
             } elseif(empty($message) && !empty($_SESSION[$name])){
                 $class = !empty($_SESSION[$name. '_class']) ? $_SESSION[$name. '_class'] : '';
-                echo '<div class="'.$class.'" id="msg-flash">'.$_SESSION[$name].'</div>';                
+                //echo '<div class="'.$class.'" id="msg-flash">'.$_SESSION[$name].'</div>';  
+                echo '<script>createNotification("'.$_SESSION[$name].'", "'.$class.'")</script>';                    
                 unset($_SESSION[$name]);
                 unset($_SESSION[$name. '_class']);
             }
@@ -35,6 +36,15 @@
             return false;
         }
     }
+
+    function isAdmin(){
+        if((isset($_SESSION[DB_NAME .'user_tipo'])) && ($_SESSION[SE.'user_tipo']) == '@admin'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 
 ?>

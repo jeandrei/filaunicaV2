@@ -6,7 +6,7 @@
 
 /*Deixa o texto e a borda do erro jquery em vermelho*/
 .error{
-    color:red
+    color:red;
 }
 
 input.error, input {
@@ -53,6 +53,40 @@ input[type="color"]::-webkit-color-swatch {
 	border: none;
 }
 /*collor picker*/
+
+
+/* POP UP PARA MENSAGEM DE ERRO */
+#toasts {
+    position: fixed;
+    bottom: 60px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 2;
+  }
+  
+  .msg {
+    background-color: rgb(156, 153, 153);
+    border-radius: 5px;
+    padding: 1rem 2rem;
+    margin: 0.5rem;
+  }
+  
+  .msg.info {
+    background-color: rgb(241, 246, 105);
+    color: black;    
+  }
+  
+  .msg.success {
+    background-color: rgb(143, 239, 146);
+    color: black; 
+  }
+  
+  .msg.error {
+    background-color: rgb(241, 108, 108);
+    color: black;   
+  }
 
 
 

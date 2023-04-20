@@ -68,9 +68,8 @@
                         situacao:val.checked
                     }, 
                     success: function(retorno_php){   
-                    console.log(retorno_php);
-                    //document.getElementById('modalClientTable').innerHTML = retorno_php;
-                    //implantar a mensagem estilo popup e apresentar a mensagem que foi atualizado;
+                    let responseObj = JSON.parse(retorno_php)                  
+                    createNotification(responseObj.message,responseObj.classe);
                     }
                 });//Fecha o ajax     
             });

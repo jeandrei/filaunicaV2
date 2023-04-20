@@ -78,7 +78,7 @@
                       
                         try {
                                 if($this->situacaoModel->register($data)){
-                                    flash('message', 'Cadastro realizado com sucesso!');                     
+                                    flash('message', 'Cadastro realizado com sucesso!','success');                     
                                     $this->view('situacoes/new');
                                 } else {
                                     throw new Exception('Ops! Algo deu errado ao tentar gravar os dados!');
@@ -86,12 +86,12 @@
         
                             } catch (Exception $e) {
                                 $erro = 'Erro: '.  $e->getMessage(). "\n";
-                                flash('message', $erro,'alert alert-danger');
+                                flash('message', $erro,'error');
                                 $this->view('situacoes/new');
                             }                  
                         } else {
                             //Validação falhou
-                            flash('message', 'Erro ao efetuar o cadastro, verifique os dados informados!','alert alert-danger');                     
+                            flash('message', 'Erro ao efetuar o cadastro, verifique os dados informados!','error');                     
                             $this->view('situacoes/new',$data);
                         }     
 
@@ -167,12 +167,12 @@
         
                             } catch (Exception $e) {
                                 $erro = 'Erro: '.  $e->getMessage(). "\n";
-                                flash('message', $erro,'alert alert-danger');
+                                flash('message', $erro,'error');
                                 $this->view('situacoes/edit');
                             }                  
                         } else {
                             //Validação falhou
-                            flash('message', 'Erro ao tentar atualizar o cadastro, verifique os dados informados!','alert alert-danger');                     
+                            flash('message', 'Erro ao tentar atualizar o cadastro, verifique os dados informados!','error');                     
                             $this->view('situacoes/edit',$data);
                         }
             
@@ -215,14 +215,14 @@
             if(isset($_POST['delete'])){                
                 try {
                     if($this->situacaoModel->delete($id)){
-                        flash('message', 'Registro excluido com sucesso!', 'alert alert-success'); 
+                        flash('message', 'Registro excluido com sucesso!', 'success'); 
                         redirect('situacoes/index');
                     } else {
                         throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
                     }
                 } catch (Exception $e) {
                     $erro = 'Erro: '.  $e->getMessage(). "\n";
-                    flash('message', $erro,'alert alert-danger');
+                    flash('message', $erro,'error');
                     $this->view('situacoes/index');
                 }                
            } else {              
