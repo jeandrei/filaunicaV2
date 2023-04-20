@@ -138,7 +138,29 @@
             } else {
                 return false;
             }
-        }       
+        } 
+        
+        public function atualizaSituacao($id,$situacao){            
+            
+            
+            if($situacao == 'true')          {
+                $sql = 'UPDATE escola SET emAtividade = 1 WHERE id = :id';
+            } else {
+                $sql = 'UPDATE escola SET emAtividade = 0 WHERE id = :id';
+            }
+                     
+            $this->db->query($sql);
+
+            // Bind values
+            $this->db->bind(':id',$id);      
+
+            // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
 
 
 

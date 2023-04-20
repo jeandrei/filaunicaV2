@@ -26,6 +26,7 @@
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/admins">Fila de Espera</a> 
+                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/listaunidades">Lista de Unidades</a> 
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/admins/analiseDeRegistrosDuplicados">Análise de Registros Duplicados</a>
                         </div>
                     </li>
@@ -56,7 +57,7 @@
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/users">Usuários</a>
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/etapas">Etapas</a> 
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/situacoes">Situações</a>
-                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/escolas">Escolas</a>                                  
+                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/escolas">Unidades</a>                                  
                         </div>
                       </li>
                   <?php endif; ?>         

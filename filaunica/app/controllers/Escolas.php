@@ -298,5 +298,11 @@
             exit();
            }                 
         }
+
+        public function atualizasituacao(){ 
+           if($this->escolaModel->atualizaSituacao($_POST['escolaId'],$_POST['situacao'])){
+            echo 'tudo ok';
+           };
+        }
 }   
 ?>
