@@ -111,10 +111,15 @@
                 <br>
                  <!--BOTÕES-->
                  <div class="row">
-                    <div class="col">                    
-                        <input type="submit" value="Atualizar" class="btn btn-success btn-block">                        
-                    </div>                    
+                    <div class="col-3 text-end p-1">                    
+                        <input type="submit" value="Atualizar" class="btn btn-success">                        
+                    </div>  
+                    
+                    <div class="col-7 text-start p-1">                    
+                        <a href="<?php echo URLROOT; ?>/escolas/usuarioescola/<?php echo $data['id']; ?>" class="btn btn-success">Vincular Escola</a>                        
+                    </div>  
                  </div>
+                 
             </form>
         </div>
     </div>
