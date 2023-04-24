@@ -31,11 +31,13 @@
 
 
         // PÁGINA INICIAL DO SISTEMA DEPOIS DE EFETUAR O LOGIN
-        public function sistem(){
-
-            if((!isLoggedIn())){                
-                redirect('users/login');                
-            }  
+        public function sistem(){  
+            
+            if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('users/login');
+                die();
+              }              
 
             // Posso passar valores aqui pois no view está definido um array para isso
             // public function view($view, $data = []){
@@ -59,6 +61,13 @@
 
         // PÁGINA ABOUT
         public function about(){
+
+            if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('users/login');
+                die();
+            } 
+
             $data = [
                 'title' => 'Sobre Nós',
                 'description'=> 'Sistema de gerenciamento de fila única'

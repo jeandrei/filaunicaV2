@@ -38,12 +38,31 @@
     }
 
     function isAdmin(){
-        if((isset($_SESSION[DB_NAME .'user_tipo'])) && ($_SESSION[SE.'user_tipo']) == '@admin'){
+        if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'admin'){
             return true;
         } else {
             return false;
         }
     }
+
+
+    function isUser(){
+        if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'user'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function isSec(){
+        if((isset($_SESSION[DB_NAME .'user_type'])) && ($_SESSION[DB_NAME.'user_type']) == 'sec'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
 
 

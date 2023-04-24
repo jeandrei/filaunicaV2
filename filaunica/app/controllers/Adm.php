@@ -7,15 +7,19 @@
         }
 
         public function index(){ 
-          
-          if((!isLoggedIn())){                
-            $this->view('users/login');            
-          } else if($_SESSION[DB_NAME . '_user_type'] != "admin"){
+            
+          if((!isLoggedIn())){ 
+            flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
             $this->view('users/login');
+            die();
           } else {
-            $this->view('pages/sistem');
-          }
-             
+            $data = [
+              'title' => 'Fila Única',
+              'description'=> 'Sistema de fila única de Penha/SC'
+            ];          
+            $this->view('pages/sistem', $data);   
+          }              
+          
         }       
         
 

@@ -32,6 +32,9 @@
       
 </head>
 <body>
+
+<div id="toasts"></div>
+
 <?php //require APPROOT . '/views/inc/navbar.php'; ?>
 <!-- a linha abaixo inicia um container do bootstrap ela vai fechr no arquivo footer.php-->
 
@@ -39,8 +42,8 @@
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card card-body bg-light mt-5">
-                <?php // Segunda parte da menságem        
-                flash('register_success');
+                <?php // Segunda parte da menságem  
+                flash('message');
                 ?>
                 <h2>Login</h2>
                 <p>Por favor informe suas credenciais</p>                               

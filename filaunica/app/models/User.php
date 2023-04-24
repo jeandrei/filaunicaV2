@@ -9,7 +9,7 @@
         }
 
         // Register User
-        public function register($data){
+        public function register($data){            
            
             $this->db->query('INSERT INTO users (name, email, password, type) VALUES (:name, :email, :password, :type)');
             // Bind values
@@ -139,6 +139,24 @@
             } else {
                 return false;
             }
+        }
+
+
+        public function getUserType($id_user){
+
+            $this->db->query("SELECT role.description as type FROM role,userrole WHERE role.id = userrole.roleid AND userrole.userid = :id_user");
+
+            $this->db->bind(':id_user', $id_user);            
+
+            $result = $this->db->single();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return $result->type;
+            } else {
+                return false;
+            }
+            
         }
 
     }

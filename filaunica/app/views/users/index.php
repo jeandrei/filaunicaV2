@@ -24,7 +24,7 @@
             <tr class="text-center">
                 <td><?php echo $user->name;?></td>
                 <td><?php echo $user->email;?></td>
-                <td><?php  echo (($user->type == "admin")) ? 'Administrador' : 'Usuário';?></td>  
+                <td><?php  echo $user->type;?></td>  
 
                 <td>       
 

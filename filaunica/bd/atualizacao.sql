@@ -1,0 +1,11 @@
+ALTER TABLE userrole ADD COLUMN id INT(11) NOT NULL FIRST;
+
+ALTER TABLE userrole
+  ADD PRIMARY KEY (id);
+
+ALTER TABLE userrole
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+ 
+ALTER TABLE userrole CHANGE roleid escolaid INT(11);
+  
+ALTER TABLE userrole RENAME userescola;

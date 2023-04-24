@@ -9,12 +9,14 @@
         public function index() {          
             
             if((!isLoggedIn())){ 
-                redirect('index');
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('users/login');
+                die();
+            } else if ((!isAdmin()) && (!isUser())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/sistem'); 
+                die();
             }  
-
-            if($_SESSION[DB_NAME . '_user_type'] != "admin"){
-                redirect('index');
-            } 
             
             if($escolas = $this->escolaModel->getEscolas()){
                                

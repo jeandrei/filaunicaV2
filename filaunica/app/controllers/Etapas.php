@@ -8,12 +8,14 @@
         public function index() { 
             
             if((!isLoggedIn())){ 
-                redirect('index');
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('users/login');
+                die();
+            } else if ((!isAdmin())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/sistem'); 
+                die();
             }  
-
-            if($_SESSION[DB_NAME . '_user_type'] != "admin"){
-                redirect('index');
-            } 
             
             if($data['etapas'] = $this->etapaModel->getAllEtapas()){                
                 $this->view('etapas/index', $data);
@@ -25,8 +27,14 @@
         public function new(){  
             
             if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
                 redirect('users/login');
-            }  
+                die();
+            } else if ((!isAdmin())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/sistem'); 
+                die();
+            }   
            
             // Check for POST            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -106,7 +114,7 @@
             
             } else {
 
-                if($_SESSION[DB_NAME . '_user_type'] != "admin"){
+                if(!isAdmin()){
                     redirect('index');
                 } 
 
@@ -129,8 +137,14 @@
         public function edit($id){
             
             if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
                 redirect('users/login');
-            } 
+                die();
+            } else if ((!isAdmin())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/sistem'); 
+                die();
+            }  
             
             // Check for POST            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){  
@@ -218,7 +232,7 @@
                 // get exiting user from the model
                 $etapa = $this->etapaModel->getEtapaByid($id);
 
-                if($_SESSION[DB_NAME . '_user_type'] != "admin"){
+                if(!isAdmin()){
                     redirect('userlist');
                 }
                
@@ -235,7 +249,17 @@
         }
 
 
-        public function delete($id){              
+        public function delete($id){ 
+            
+            if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('users/login');
+                die();
+            } else if ((!isAdmin())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/sistem'); 
+                die();
+            }  
 
              //VALIDAÇÃO DO ID
              if(!is_numeric($id)){

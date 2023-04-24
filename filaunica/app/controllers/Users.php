@@ -7,10 +7,11 @@
 
         public function index() {
 
-            if($_SESSION[DB_NAME . '_user_type'] != "admin"){
-                redirect('index');
+            if((!isAdmin())){ 
+                flash('message', 'Você ser um administrador para ter acesso a esta página!', 'error'); 
+                redirect('pages/sistem');
                 die();
-            }             
+            }   
             
             
             if($data = $this->userModel->getUsers()){  
@@ -25,25 +26,24 @@
         public function new(){                
            
             if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
                 redirect('users/login');
-            } 
+                die();
+              } else if ((!isAdmin())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/sistem');
+                die();
+              }  
 
             // Check for POST            
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-               
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){                
+                              
                 // Process form
 
                 // Sanitize POST data
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 
-                
-                if (isset($_POST['type']) && ($_POST['type'] == 1)){
-                    $type = "admin";
-                } else {
-                    $type = "user";
-                }
-                
-
+                 
 
                 //init data
                 $data = [
@@ -51,7 +51,7 @@
                     'email' => trim($_POST['email']),
                     'password' => trim($_POST['password']),
                     'confirm_password' => trim($_POST['confirm_password']),                    
-                    'type' => $type,
+                    'type' => $_POST['type'],
                     'name_err' => '',
                     'email_err' => '',
                     'password_err' => '',
@@ -90,6 +90,10 @@
                     $data['confirm_password_err'] = 'Senha e confirmação de senha diferentes';    
                     }
                 }
+
+                if(!isset($data['type'])){
+                    $data['type_err'] = 'Por favor informe um tipo para o usuário';
+                }
                
 
                 // Make sure errors are empty
@@ -97,6 +101,7 @@
                     empty($data['email_err']) &&
                     empty($data['name_err']) && 
                     empty($data['password_err']) &&
+                    empty($data['type_err']) &&
                     empty($data['confirm_password_err']) 
 
                     ){
@@ -137,7 +142,7 @@
                     'confirm_password_err' => '',
                     'erro' => ''
                 ];
-                if($_SESSION[DB_NAME . '_user_type'] != "admin"){
+                if(!isAdmin()){
                     redirect('index');
                 } else {
                      // Load view
@@ -152,30 +157,31 @@
         public function edit($id){ 
 
             if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
                 redirect('users/login');
-            } 
+                die();
+              } else if ((!isAdmin())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/sistem');
+                die();
+              }  
 
             // Check for POST            
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){                
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+              
                
                 // Process form
 
                 // Sanitize POST data
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                /*
-                if (isset($_POST['type']) && ($_POST['type'] == 1)){
-                    $type = 'admin';
-                } else {
-                    $type = 'user';
-                }
-                */
+                
                 //init data
                 $data = [
                     'name' => trim($_POST['name']),
                     'email' => trim($_POST['email']),
                     'password' => trim($_POST['password']),
                     'confirm_password' => trim($_POST['confirm_password']),
-                    'type' => $type,
+                    'type' => $_POST['type'],
                     'name_err' => '',                    
                     'password_err' => '',
                     'confirm_password_err' => ''
@@ -203,10 +209,15 @@
                     }
                 }
 
+                if(!isset($data['type'])){
+                    $data['type_err'] = 'Por favor informe um tipo para o usuário';
+                }
+
                 // Make sure errors are empty
                 if(   
                     empty($data['name_err']) && 
                     empty($data['password_err']) &&
+                    empty($data['type_err']) &&
                     empty($data['confirm_password_err'])                    
                     ){
                       //Validated
@@ -232,8 +243,9 @@
             } else {
                 // get exiting user from the model
                 $user = $this->userModel->getUserByid($id);
+                
 
-                if($_SESSION[DB_NAME . '_user_type'] != "admin"){
+                if(!isAdmin()){
                     redirect('index');
                 }
                
@@ -245,7 +257,7 @@
                     'type' => $user->type                  
                 ];
 
-                if($_SESSION[DB_NAME . '_user_type'] != "admin"){
+                if(!isAdmin()){
                     redirect('index');
                 } else {
                 // Load view
@@ -255,7 +267,16 @@
         }
 
         public function delete($id){              
-           //die('user ' . $_SESSION[DB_NAME . '_user_id']);
+            
+            if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('users/login');
+                die();
+              } else if ((!isAdmin())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/sistem');
+                die();
+              }  
            
             //se não for um id válido
             if(!is_numeric($id)){
@@ -303,7 +324,7 @@
        }       
             
 
-        public function login(){          
+        public function login(){            
             // Check for POST            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form
@@ -401,13 +422,15 @@
         session_destroy();
         redirect('pages/login'); 
     }
+    
 
-    public function isLoggedIn(){
-        if(isset($_SESSION[DB_NAME . '_user_id'])){
-            return true;
-        } else {
-            return false;
-        }
+    public function getType($id){
+        $userType = $this->userModel->getUserType($id);
+        return $userType;
     }
+
+    
+
+
 }   
 ?>

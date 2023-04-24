@@ -10,10 +10,19 @@
 
         public function index(){ 
           
-          //se o usuário não estiver logado redirecionamos para o index
-          if((!isLoggedIn())){ 
-            redirect('index');
-          }           
+          //se o usuário não estiver logado redirecionamos para o index 
+          
+
+          if((!isLoggedIn())){            
+            $this->view('users/login');
+            die();
+          } else if ((!isAdmin()) && (!isSec())){
+            $this->view('users/login'); 
+            die();
+          } else {
+            $this->view('pages/sistem');
+            die();
+          }    
          
 
            if(isset($_GET['page']))
@@ -228,7 +237,7 @@
             $this->view('relatorios/relatoriomatricula' ,$data);
              //CASO NÃO FOR O BOTÃO IMPRIMIR EU ATUALIZO OS DADOS DO CADASTRO E REGISTRO NO HISTÓRICO
           } elseif (($this->filaModel->update($data)) && ($this->adminModel->gravaHistorico($data['id'],$data['situacao_id'],$data['historico'],$data['usuario']))){                                  
-            flash('register_success', 'Protocolo atualizado com sucesso!');                        
+            flash('message', 'Protocolo atualizado com sucesso!','success');                        
             redirect('admins/edit/' . $data['id']);
           }             
            else {
