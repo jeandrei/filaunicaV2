@@ -355,10 +355,6 @@
                             );                     
                     echo json_encode($json_ret); 
             }
-        }
-
-        public function usuarioescola($id){
-            die('usuario escola mano ' . $id);
-        }
+        }        
 }   
 ?>

@@ -28,6 +28,12 @@
 
          // Update User
          public function update($data){
+            //se não for um usuário sec eu removo todos os vinculos com escola do usuário
+            if($data['type'] <> 'sec'){               
+                if($this->temUsuarioEscola($data['id'])){
+                    $this->deleteescolasusuario($data['id']);
+                }               
+            }
             $this->db->query('UPDATE users SET name = :name, password = :password, type =:type WHERE email = :email');
             // Bind values
             $this->db->bind(':email',$data['email']);
@@ -37,6 +43,36 @@
 
             // Execute
             if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function deleteescolasusuario($userId){
+            $this->db->query('DELETE FROM userescola WHERE userid = :userId');
+            // Bind value
+            $this->db->bind(':userId', $userId);
+
+            $row = $this->db->execute();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function temUsuarioEscola($userId){
+            $this->db->query('SELECT * FROM userescola WHERE userid = :userid');
+            // Bind value
+            $this->db->bind(':userid', $userId);
+
+            $row = $this->db->single();
+
+            // Check row
+            if($this->db->rowCount() > 0){
                 return true;
             } else {
                 return false;
@@ -112,7 +148,7 @@
 
          // Find user by email
          public function getUserById($id_user){
-            $this->db->query('SELECT * FROM users WHERE id = :id');      
+            $this->db->query('SELECT id,name,email,type,created_at FROM users WHERE id = :id');      
             
             $this->db->bind(':id', $id_user);
 

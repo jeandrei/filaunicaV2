@@ -16,13 +16,10 @@
           if((!isLoggedIn())){            
             $this->view('users/login');
             die();
-          } else if ((!isAdmin()) && (!isSec())){
+          } else if ((!isAdmin()) && (!isUser())){
             $this->view('users/login'); 
             die();
-          } else {
-            $this->view('pages/sistem');
-            die();
-          }    
+          }
          
 
            if(isset($_GET['page']))

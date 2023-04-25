@@ -1,4 +1,11 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+
+<?php if($data['alerta']) : ?>
+    <div class="alert alert-warning" role="alert">
+        <?php echo $data['alerta'];?>
+    </div>
+<? endif;?>
+
 <div class="row">
     <div class="col-md-6 mx-auto">
     <a href="<?php echo URLROOT; ?>/users" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Voltar</a>
@@ -110,14 +117,24 @@
 
                 <br>
                  <!--BOTÕES-->
-                 <div class="row">
-                    <div class="col-3 text-end p-1">                    
-                        <input type="submit" value="Atualizar" class="btn btn-success">                        
-                    </div>  
+                 <div class="row">                      
                     
-                    <div class="col-7 text-start p-1">                    
-                        <a href="<?php echo URLROOT; ?>/escolas/usuarioescola/<?php echo $data['id']; ?>" class="btn btn-success">Vincular Escola</a>                        
-                    </div>  
+                    <?php if($data['alerta']) :?>
+                        <div class="col-3 text-end p-1">                    
+                            <input type="submit" name="confirma" value="Confirmar" class="btn btn-success">                        
+                         </div>
+                    <?php else : ?>
+                        <div class="col-3 text-end p-1">                    
+                            <input type="submit" name="atualiza" value="Atualizar" class="btn btn-success">                        
+                         </div>
+                    <?php endif; ?>
+                    
+                    <!-- SÓ MOSTRO O BOTÃO DE VINCULAR -->
+                    <?php if($data['type'] == 'sec') :?>
+                        <div class="col-7 text-start p-1">                    
+                            <a href="<?php echo URLROOT; ?>/usuarioescolas/<?php echo $data['id']; ?>" class="btn btn-success">Vincular Escola</a>                        
+                        </div>  
+                    <?php endif; ?>
                  </div>
                  
             </form>

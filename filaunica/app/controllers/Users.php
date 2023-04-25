@@ -3,6 +3,7 @@
         public function __construct(){
             //vai procurar na pasta model um arquivo chamado User.php e incluir
             $this->userModel = $this->model('User');
+            $this->usuarioEscolaModel = $this->model('Usuarioescola');
         }
 
         public function index() {
@@ -154,8 +155,8 @@
         }
 
        
-        public function edit($id){ 
-
+        public function edit($id){             
+            
             if((!isLoggedIn())){ 
                 flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
                 redirect('users/login');
@@ -177,6 +178,7 @@
                 
                 //init data
                 $data = [
+                    'id' => $id,
                     'name' => trim($_POST['name']),
                     'email' => trim($_POST['email']),
                     'password' => trim($_POST['password']),
@@ -213,12 +215,22 @@
                     $data['type_err'] = 'Por favor informe um tipo para o usuário';
                 }
 
+                if($data['type'] <> 'sec'){
+                    if(!$_POST['confirma']){
+                        if($this->usuarioEscolaModel->getEscolasDoUsuario($id)){
+                            $data['alerta'] = 'Este usuário possui vinculos com escola e a atualização para um tipo diferente requer a remoção dos vinculos.';                        
+                        }
+                    }
+                }
+                
+
                 // Make sure errors are empty
                 if(   
                     empty($data['name_err']) && 
                     empty($data['password_err']) &&
                     empty($data['type_err']) &&
-                    empty($data['confirm_password_err'])                    
+                    empty($data['confirm_password_err']) &&
+                    empty($data['alerta'])                 
                     ){
                       //Validated
                       
@@ -237,7 +249,7 @@
                       
                     } else {
                       // Load the view with errors
-                      $this->view('users/userlist', $data);
+                      $this->view('users/edituser', $data);
                     }              
                           
             } else {
