@@ -9,3 +9,17 @@ ALTER TABLE userrole
 ALTER TABLE userrole CHANGE roleid escolaid INT(11);
   
 ALTER TABLE userrole RENAME userescola;
+
+
+CREATE TABLE `escola_vagas` (
+  `id` int(11) NOT NULL,
+  `etapa_id` int(11),
+  `escola_id` int(11),
+  `qtd` int(11)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `escola_vagas`
+  ADD PRIMARY KEY (`id`);
+  
+ ALTER TABLE `escola_vagas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;

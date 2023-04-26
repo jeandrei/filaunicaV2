@@ -16,6 +16,19 @@
                     <li class="nav-item">
                       <a class="nav-link" href="<?php echo URLROOT; ?>/pages/about">Sobre</a>
                     </li>
+
+                    
+                    <?php if(isAdmin() || isUser() || isSec()) : ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        CEI
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
+                          <a class="dropdown-item" href="<?php echo URLROOT; ?>/escolavagas">Quadro de Vagas</a>
+                        </div>
+                    </li>
+                  <?php endif; ?> 
                     
 
                   <?php if(isAdmin() || isUser()) : ?>

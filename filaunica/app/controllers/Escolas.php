@@ -6,8 +6,7 @@
             $this->bairroModel = $this->model('Bairro');
         }
 
-        public function index() { 
-            
+        public function index() {             
             if((!isLoggedIn())){ 
                 flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
                 redirect('users/login');

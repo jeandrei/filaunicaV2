@@ -1,8 +1,8 @@
 <?php require APPROOT . '/views/inc/header.php';?>
 <div class="row">
     <div class="col-md-6 mx-auto">
-    <?php flash('register_success');?>
-    <a href="<?php echo URLROOT; ?>/etapas" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Back</a>
+    <?php flash('message');?>
+    <a href="<?php echo URLROOT; ?>/etapas" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Voltar</a>
         <div class="card card-body bg-ligth mt-5">
             <h2>Registrar uma etapa</h2>
             <p>Por favor informe os dados da nova etapa</p>

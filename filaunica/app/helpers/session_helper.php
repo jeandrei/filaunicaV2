@@ -55,7 +55,7 @@
     }
 
     function isSec(){
-        if((isset($_SESSION[DB_NAME .'user_type'])) && ($_SESSION[DB_NAME.'user_type']) == 'sec'){
+        if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'sec'){
             return true;
         } else {
             return false;

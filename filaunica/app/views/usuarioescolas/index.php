@@ -8,7 +8,8 @@
         <a href="<?php echo URLROOT; ?>/users" class="btn btn-light"><i class="fa fa-backward"></i>Voltar</a>
         <a href="<?php echo URLROOT; ?>/usuarioescolas/new/<?php echo $data['user']->id;?>" class="btn btn-primary pull-right">
             <i class="fa fa-pencil"></i> Adicionar
-        </a>        
+        </a>
+        
     </div>
  </div> 
  <?php flash('message');?>

@@ -62,9 +62,10 @@
         } 
               
 
-        public function getEscolasDoUsuario($userId){
+        public function getEscolasDoUsuario($userId){            
             $this->db->query('SELECT 
                                     es.nome as nome, 
+                                    es.id as escolaid,
                                     ue.userid as userid,
                                     ue.id as id 
                               FROM 
