@@ -13,13 +13,15 @@
           //se o usuário não estiver logado redirecionamos para o index 
           
 
-          if((!isLoggedIn())){            
-            $this->view('users/login');
+          if((!isLoggedIn())){ 
+            flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+            redirect('users/login');
             die();
-          } else if ((!isAdmin()) && (!isUser())){
-            $this->view('users/login'); 
+          } else if ((!isAdmin()) && (!isUser())){                
+            flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+            redirect('pages/sistem'); 
             die();
-          }
+          }  
          
 
            if(isset($_GET['page']))
@@ -144,7 +146,10 @@
 
             if((!isLoggedIn())){                              
               die('Usuário não está logado!');
-            } 
+            } else if((!isAdmin()) && (!isUser())){
+              die('Usuário sem permissão para realizar esta operação!');
+            }
+              
 
             try{
                     
@@ -171,9 +176,11 @@
        
       public function historico($id){  
         
-        if((!isLoggedIn())){                
+        if((!isLoggedIn())){                              
           die('Usuário não está logado!');
-        }  
+        } else if((!isAdmin()) && (!isUser())){
+          die('Usuário sem permissão para realizar esta operação!');
+        } 
 
         if($data = $this->adminModel->getHistoricoById($id)){     
           $this->view('admins/historico', $data);
@@ -188,6 +195,8 @@
         
       //se o usuário não tiver feito login redirecionamos para o index
       if((!isLoggedIn())){ 
+        redirect('index');
+      } else if((!isAdmin()) && (!isUser())){
         redirect('index');
       }  
 
@@ -286,8 +295,14 @@
 
     public function relatorioMensal(){
 
-      if((!isLoggedIn())){                
-        redirect('users/login');        
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('users/login');
+        die();
+      } else if ((!isAdmin()) && (!isUser())){                
+        flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+        redirect('pages/sistem'); 
+        die();
       }  
 
       if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -327,8 +342,14 @@
 
   public function relatorioDemanda(){
     
-    if((!isLoggedIn())){                
-      redirect('users/login');      
+    if((!isLoggedIn())){ 
+      flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+      redirect('users/login');
+      die();
+    } else if ((!isAdmin()) && (!isUser())){                
+      flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+      redirect('pages/sistem'); 
+      die();
     }  
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {       
@@ -396,8 +417,14 @@
 
   public function relatorioAlunoEspecial(){
 
-    if((!isLoggedIn())){                
-      redirect('users/login');     
+    if((!isLoggedIn())){ 
+      flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+      redirect('users/login');
+      die();
+    } else if ((!isAdmin()) && (!isUser())){                
+      flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+      redirect('pages/sistem'); 
+      die();
     }  
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {       
@@ -440,9 +467,15 @@
 
   public function relatorioAguardandoAlfabetica(){    
     
-    if((!isLoggedIn())){                
-      redirect('users/login');      
-    }  
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('users/login');
+        die();
+      } else if ((!isAdmin()) && (!isUser())){                
+        flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+        redirect('pages/sistem'); 
+        die();
+      }  
      
       $fila = $this->filaModel->getAguardandoAlfabetica();        
       
@@ -473,9 +506,11 @@
 
   public function gravaobsadmin(){
 
-    if((!isLoggedIn())){                
+    if((!isLoggedIn())){                              
       die('Usuário não está logado!');
-    }  
+    } else if((!isAdmin()) && (!isUser())){
+      die('Usuário sem permissão para realizar esta operação!');
+    }
 
     $id = $_POST['id'];
     $data= $_POST['data']; 
@@ -509,6 +544,17 @@
 
 
   public function analiseDeRegistrosDuplicados(){
+    
+    if((!isLoggedIn())){ 
+      flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+      redirect('users/login');
+      die();
+    } else if ((!isAdmin()) && (!isUser())){                
+      flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+      redirect('pages/sistem'); 
+      die();
+    }  
+
     $duplicados = $this->filaModel->getDuplicados();
    
     $indiciDuplicado = 0;

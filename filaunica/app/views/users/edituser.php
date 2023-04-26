@@ -130,7 +130,7 @@
                     <?php endif; ?>
                     
                     <!-- SÓ MOSTRO O BOTÃO DE VINCULAR -->
-                    <?php if($data['type'] == 'sec') :?>
+                    <?php if($data['typedb'] == 'sec') :?>
                         <div class="col-7 text-start p-1">                    
                             <a href="<?php echo URLROOT; ?>/usuarioescolas/<?php echo $data['id']; ?>" class="btn btn-success">Vincular Escola</a>                        
                         </div>  

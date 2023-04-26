@@ -184,6 +184,7 @@
                     'password' => trim($_POST['password']),
                     'confirm_password' => trim($_POST['confirm_password']),
                     'type' => $_POST['type'],
+                    'typedb' => $this->userModel->getUserById($id)->type,
                     'name_err' => '',                    
                     'password_err' => '',
                     'confirm_password_err' => ''
@@ -266,7 +267,8 @@
                     'id' => $id,
                     'name' => $user->name,
                     'email' => $user->email,                                      
-                    'type' => $user->type                  
+                    'type' => $user->type,
+                    'typedb' => $this->userModel->getUserById($id)->type,                 
                 ];
 
                 if(!isAdmin()){

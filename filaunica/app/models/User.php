@@ -49,6 +49,7 @@
             }
         }
 
+      
         public function deleteescolasusuario($userId){
             $this->db->query('DELETE FROM userescola WHERE userid = :userId');
             // Bind value
@@ -116,6 +117,11 @@
 
          // Find user by email
          public function delUserByid($id){
+            // se tem usuarioescola vinculado ao usuário excluo tudo primeiro             
+            if($this->temUsuarioEscola($id)){
+                $this->deleteescolasusuario($id);
+            }               
+            
             $this->db->query('DELETE FROM users WHERE id = :id');
             // Bind value
             $this->db->bind(':id', $id);

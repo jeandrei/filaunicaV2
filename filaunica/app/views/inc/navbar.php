@@ -18,7 +18,7 @@
                     </li>
                     
 
-
+                  <?php if(isAdmin() || isUser()) : ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Registros
@@ -30,9 +30,9 @@
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/admins/analiseDeRegistrosDuplicados">Análise de Registros Duplicados</a>
                         </div>
                     </li>
+                  <?php endif; ?> 
 
-
-
+                  <?php if(isAdmin() || isUser()) : ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Relatórios
@@ -44,11 +44,11 @@
                           <a class="dropdown-item" href="<?php echo URLROOT; ?>/admins/relatorioAguardandoAlfabetica">Relatorio Aguardando Alfabética</a>
                         </div>
                       </li>
-                    
+                  <?php endif; ?>  
                             
 
                 <!--FAZ A VERIFICAÇÃO SE O USUÁRIO É ADMINISTRADOR, SE SIM CARREGA OS MENUS DE CADASTRO-->
-                  <?php if(isset($_SESSION[DB_NAME . '_user_type']) && ($_SESSION[DB_NAME . '_user_type']) == "admin") : ?>           
+                  <?php if(isAdmin()) : ?>           
                       <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Cadastros
