@@ -1,13 +1,12 @@
 <?php require APPROOT . '/views/inc/header.php';?>
-
 <div class="row">
     <div class="col-md-6 mx-auto">
     <?php flash('message');?>
-    <a href="<?php echo URLROOT; ?>/pages/sistem" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Voltar</a>
+    <a href="<?php echo URLROOT; ?>/escolavagas" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Voltar</a>
         <div class="card card-body bg-ligth mt-5">
           <h2>Vagas por etapa</h2>
           <p>Informe a quantidade de vagas por etapa</p>
-          <form action="<?php echo URLROOT; ?>/escolavagas/vagas" method="post"> 
+          <form action="<?php echo URLROOT; ?>/escolavagas/vagas/<?php echo $data['post']['escola_id'];?>" method="post"> 
               <table class="table table-striped">
                 <thead>
                   <tr>                  
@@ -27,7 +26,7 @@
                             name="<?php echo $etapa['id'];?>"
                             id="<?php echo $etapa['id'];?>"
                             class="form-control form-control-sm col-2"
-                            value="<?php echo $_POST[$etapa['id']];?>"
+                            value="<?php echo ($etapa['qtd']) ? $etapa['qtd'] : $_POST[$etapa['id']];?>"
                           >
                         </td>                      
                       </tr>      
