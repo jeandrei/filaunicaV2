@@ -88,6 +88,29 @@
             }
         }
 
+
+        public function getAllEscolas(){            
+            $this->db->query('SELECT 
+                                    es.nome as nome, 
+                                    es.id as escolaid
+                              FROM 
+                                    escola es                               
+                            '); 
+            
+            $result = $this->db->resultSet();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return $result;
+            } else {
+                return false;
+            }
+        }
+
+
+
+
+
         public function delete($id){
             $this->db->query('DELETE FROM userescola WHERE id = :id');
             // Bind value

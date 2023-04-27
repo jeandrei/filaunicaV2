@@ -59,7 +59,10 @@
 
 
             } else {
-                if($data['escolas'] = $this->usuarioEscolaModel->getEscolasDoUsuario($user_id)){
+                if(isAdmin() || isUser()){                    
+                    $data['escolas'] = $this->usuarioEscolaModel->getAllEscolas();                 
+                    $this->view('escolavagas/index', $data);
+                } else if($data['escolas'] = $this->usuarioEscolaModel->getEscolasDoUsuario($user_id)){
                     $this->view('escolavagas/index', $data);
                 } else {                                 
                     $this->view('usuarioescolas/index');

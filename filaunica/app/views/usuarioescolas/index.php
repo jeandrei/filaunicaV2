@@ -5,10 +5,12 @@
         <h2>Escolas do usuário <?php echo $data['user']->name;?></h2>
     </div>
     <div class="col-md-4">
-        <a href="<?php echo URLROOT; ?>/users" class="btn btn-light"><i class="fa fa-backward"></i>Voltar</a>
-        <a href="<?php echo URLROOT; ?>/usuarioescolas/new/<?php echo $data['user']->id;?>" class="btn btn-primary pull-right">
-            <i class="fa fa-pencil"></i> Adicionar
-        </a>
+        <a href="<?php echo URLROOT; ?>/pages/sistem" class="btn btn-light"><i class="fa fa-backward"></i>Voltar</a>
+        <?php if(isAdmin()) : ?>
+            <a href="<?php echo URLROOT; ?>/usuarioescolas/new/<?php echo $data['user']->id;?>" class="btn btn-primary pull-right">
+                <i class="fa fa-pencil"></i> Adicionar
+            </a>
+        <?php endif; ?>
         
     </div>
  </div> 
