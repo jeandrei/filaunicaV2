@@ -41,8 +41,26 @@
             }
         }
 
+        public function deletaTodosEscolaVagaEtapa($etapa_id){
+            $this->db->query('DELETE FROM escola_vagas WHERE etapa_id = :etapa_id');
+            // Bind value
+            $this->db->bind(':etapa_id', $etapa_id);
+
+            $row = $this->db->execute();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
          // Deleta etapa por id
          public function delEtapaByid($id){
+            //remove todas as vagas da etapa
+            $this->deletaTodosEscolaVagaEtapa($id);
+
             $this->db->query('DELETE FROM etapa WHERE id = :id');
             // Bind value
             $this->db->bind(':id', $id);

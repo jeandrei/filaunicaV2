@@ -66,8 +66,13 @@
 
 
 
-        public function getEscolaVagas($escola_id){
-            $this->db->query('SELECT e.id as id, e.descricao as descricao, ev.qtd as qtd FROM etapa e, escola_vagas ev WHERE e.id = ev.etapa_id AND ev.escola_id = :escola_id');            
+        public function getEscolaVagas($escola_id){  
+            $this->db->query('SELECT 
+                                    e.id,
+                                    e.descricao,
+                                    (SELECT qtd FROM escola_vagas ev WHERE ev.etapa_id  = e.id  AND ev.escola_id = :escola_id) AS qtd
+                            FROM 
+                                etapa e'); 
 
             $this->db->bind(':escola_id', $escola_id);
 

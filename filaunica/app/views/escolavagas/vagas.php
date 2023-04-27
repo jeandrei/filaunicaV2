@@ -22,11 +22,16 @@
                         </td>
                         <td>
                           <input 
-                            type="text"
+                            type="number"
                             name="<?php echo $etapa['id'];?>"
                             id="<?php echo $etapa['id'];?>"
                             class="form-control form-control-sm col-2"
-                            value="<?php echo ($etapa['qtd']) ? $etapa['qtd'] : $_POST[$etapa['id']];?>"
+                            value="<?php 
+                                      if ($etapa['qtd'] || $etapa['qtd'] == '0'){
+                                          echo ($etapa['qtd']);
+                                      } else {
+                                          echo ($_POST[$etapa['id']]);
+                                      }?>" 
                           >
                         </td>                      
                       </tr>      

@@ -47,7 +47,7 @@
                             ];     
                         }
                     } else {
-                        $data['etapas'] = $this->etapaModel->getEtapas(); 
+                        $data['etapas'] = $this->etapaModel->getEtapas();
                     }   
                     //die(var_dump($data['etapas']));
                     $this->view('escolavagas/vagas', $data);
@@ -90,10 +90,10 @@
                 
 
                 /*Vai verificar para cada post se foi passado a quantidade e se é numérico*/
-                foreach($_POST as $key => $valor){  
-                    if(empty($valor) || $valor=="" || $valor=='NULL'){
+                foreach($_POST as $key => $valor){ 
+                    if((empty($valor) && $valor<>'0') || $valor==="" || $valor==='NULL'){
                         $data['post']['escola_id_err'] = "Etapas sem informação!";
-                    } else if(!is_int(intval($valor)) || intval($valor)=='NULL'){
+                    } else if(!is_int(intval($valor)) || (intval($valor)==='NULL' && $valor <> '0')){
                             $data['post']['escola_id_err'] = "Etapas com valor inválido!";
                     } else {
                         $data['escolavaga'][$key] = $valor;
@@ -138,7 +138,7 @@
                         $data['etapas'][] = [
                             'id' => $row->id,
                             'descricao' => $row->descricao,
-                            'qtd' => $row->qtd
+                            'qtd' => $row->qtd 
                         ];     
                     }
                 } else {
