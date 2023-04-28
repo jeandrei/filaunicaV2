@@ -68,7 +68,7 @@ $(document).ready(function(){
 
 <div class="row">
     <div class="col-md-12 mx-auto">
-        <?php flash('register_success');?>
+        <?php flash('message');?>
         <a href="<?php echo URLROOT; ?>/admins/index" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Voltar</a>
             <div class="card card-body bg-ligth mt-5">
                 <h2>Editando protocolo número:<b> <?php echo $data['protocolo'];?></b> | Situação atual:  <?php echo $data['situacao'];?></h2>  
@@ -274,7 +274,7 @@ $(document).ready(function(){
                     <div class="row">   
                         <div class="form-group col-lg-9">
                             <label for="historico">Histórico</label>
-                            <textarea class="form-control rounded-0" name="historico" id="historico" rows="4"></textarea>
+                            <textarea class="form-control rounded-0" name="historico" id="historico" rows="4"><?php echo ($data['historico']) ?  $data['historico'] : $_POST['historico'] ;?></textarea>
                         </div>
                     </div>
                     <!--linha 02 editar-->                     

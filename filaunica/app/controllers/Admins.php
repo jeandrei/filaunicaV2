@@ -6,6 +6,7 @@
           $this->filaModel = $this->model('Fila'); 
           $this->etapaModel = $this->model('Etapa');           
           $this->situacaoModel = $this->model('Situacao'); 
+          $this->escolaVagasModel = $this->model('Escolavaga');
         }
 
         public function index(){ 
@@ -191,8 +192,8 @@
       }
 
 
-      public function edit($id){ 
-        
+      public function edit($id){         
+     
       //se o usuário não tiver feito login redirecionamos para o index
       if((!isLoggedIn())){ 
         redirect('index');
@@ -201,8 +202,9 @@
       }  
 
       // se o usuário tiver clicado em gravar
-      if($_SERVER['REQUEST_METHOD'] == 'POST'){         
-                
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){        
+      
+        
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
       
         //pego os dados do registro da fila
@@ -213,9 +215,11 @@
           'situacao_id' => $_POST['situacao'],         
           'opcao_matricula' => $_POST['escolamatricula'],
           'unidade_matricula' => $this->filaModel->getEscolasById($_POST['escolamatricula'])->nome,
+          'escola_id' => $_POST['escolamatricula'],
           'historico' => $_POST['historico'],
           'usuario' => $_SESSION[DB_NAME . '_user_name'],
           'etapa' => ($this->etapaModel->getEtapaDescricao($fila->nascimento)) ? $this->etapaModel->getEtapaDescricao($fila->nascimento) : "FORA DE TODAS AS ETAPAS",
+          'etapa_id' => ($this->etapaModel->getEtapaId($fila->nascimento)) ? $this->etapaModel->getEtapaId($fila->nascimento) : false,
           'nomecrianca' => $fila->nomecrianca,
           'nascimento' => date('d/m/Y', strtotime($fila->nascimento)),
           'responsavel' => $fila->responsavel,
@@ -227,7 +231,7 @@
           'bairro' => $this->filaModel->getBairroByid($fila->bairro_id),
           'numero' => $fila->numero,
           'complemento' => $fila->complemento,
-          'situacao' => $this->situacaoModel->getDescricaoSituacaoById($fila->situacao_id), 
+          'situacao' => ($_POST['situacao']) ? ($this->situacaoModel->getDescricaoSituacaoById($_POST['situacao'])) : $this->situacaoModel->getDescricaoSituacaoById($fila->situacao_id), 
           'turno_descricao' => $this->filaModel->getTurno($fila->turno_matricula),
           'turno_matricula' => $_POST['turno_matricula'],
           'observacao' => $fila->observacao,
@@ -237,16 +241,24 @@
         ];
 
 
-          //SE O BOTÃO CLICADO FOR O IMPRIMIR EU CHAMO A FUNÇÃO EU IMPRIMO O ENCAMINHAMENTO
+          //SE O BOTÃO CLICADO FOR O IMPRIMIR EU CHAMO A FUNÇÃO EU IMPRIMO O ENCAMINHAMENTO          
           if($_POST['botao'] == "Imprimir"){             
             // E AQUI CHAMO O RELATÓRIO          
             $this->view('relatorios/relatoriomatricula' ,$data);
              //CASO NÃO FOR O BOTÃO IMPRIMIR EU ATUALIZO OS DADOS DO CADASTRO E REGISTRO NO HISTÓRICO
-          } elseif (($this->filaModel->update($data)) && ($this->adminModel->gravaHistorico($data['id'],$data['situacao_id'],$data['historico'],$data['usuario']))){                                  
+          } elseif ($_POST['botao'] == 'atualizavaga'){                        
+              $this->escolaVagasModel->atualizaVaga($_POST['escola_id'], $data['etapa_id']);
+              redirect('admins/edit/' . $data['id']);
+           } elseif (($this->filaModel->update($data)) &&  ($this->adminModel->gravaHistorico($data['id'],$data['situacao_id'],$data['historico'],$data['usuario']))){            
+            if($data['situacao'] == 'Matriculado') {
+              $this->view('admins/confirma',$data);
+              die();
+              //$this->escolaVagasModel->atualizaVaga($data['escola_id'],$data['etapa_id']);
+            }                                
             flash('message', 'Protocolo atualizado com sucesso!','success');                        
             redirect('admins/edit/' . $data['id']);
           }             
-           else {
+           else {    
             die('Ops! Algo deu errado.');
           }
 

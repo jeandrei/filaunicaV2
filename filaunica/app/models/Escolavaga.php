@@ -86,7 +86,22 @@
             }   
         }
 
+
+        public function atualizaVaga($escola_id, $etapa_id){            
+           //UPDATE
+           $this->db->query('UPDATE escola_vagas SET qtd = qtd -1 WHERE etapa_id = :etapa_id AND escola_id = :escola_id');
+           // Bind values
+           $this->db->bind(':etapa_id',$etapa_id);
+           $this->db->bind(':escola_id',$escola_id);                                    
+
+           // Execute
+           if($this->db->execute()){
+               return true;
+           } else {
+               return false;
+           }
+        }
         
-    }//etapa
+    }//escola vaga
     
 ?>

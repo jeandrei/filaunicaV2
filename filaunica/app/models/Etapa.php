@@ -122,6 +122,7 @@
             }
         
         }
+        
 
         // RETORNA TODAS AS ETAPAS
         public function getEtapas() {
