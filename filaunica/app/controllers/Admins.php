@@ -247,11 +247,30 @@
             // E AQUI CHAMO O RELATÓRIO          
             $this->view('relatorios/relatoriomatricula' ,$data);
              //CASO NÃO FOR O BOTÃO IMPRIMIR EU ATUALIZO OS DADOS DO CADASTRO E REGISTRO NO HISTÓRICO
-          } elseif ($_POST['botao'] == 'atualizavaga'){                        
-              $this->escolaVagasModel->atualizaVaga($_POST['escola_id'], $data['etapa_id']);
+             die();
+          } 
+          
+          if ($_POST['botao'] == 'atualizavaga'){ 
+              switch ($_POST['turno_matricula']){
+                case 1:
+                  $turno = "matutino";
+                  break;
+                case 2:
+                  $turno = "vespertino";
+                  break;
+                case 3:
+                  $turno = "integral";
+                  break;
+              }              
+              $this->escolaVagasModel->atualizaVaga($_POST['escola_id'], $data['etapa_id'],$turno);
               redirect('admins/edit/' . $data['id']);
-           } elseif (($this->filaModel->update($data)) &&  ($this->adminModel->gravaHistorico($data['id'],$data['situacao_id'],$data['historico'],$data['usuario']))){            
+              die();
+           }
+           
+           
+           if (($this->filaModel->update($data)) &&  ($this->adminModel->gravaHistorico($data['id'],$data['situacao_id'],$data['historico'],$data['usuario']))){            
             if($data['situacao'] == 'Matriculado') {
+              $data['vagas'] = $this->escolaVagasModel->getEscolaVagasEtapa($data['escola_id'],$data['etapa_id']);
               $this->view('admins/confirma',$data);
               die();
               //$this->escolaVagasModel->atualizaVaga($data['escola_id'],$data['etapa_id']);
