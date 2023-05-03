@@ -40,21 +40,22 @@
         }
 
         // Registra Escolavaga
-        public function register($escola_id,$etapa_id,$qtd){    
-
+        public function register($escola_id,$etapa_id,$matutino,$vespertino,$integral){  
             if($this->existeEscolaVaga($escola_id, $etapa_id)){
                 //UPDATE
-                $this->db->query('UPDATE escola_vagas SET qtd = :qtd WHERE etapa_id = :etapa_id AND escola_id = :escola_id');
+                $this->db->query('UPDATE escola_vagas SET matutino = :matutino, vespertino = :vespertino, integral = :integral WHERE etapa_id = :etapa_id AND escola_id = :escola_id');
             } else {
                 //REGISTER
-                $this->db->query('INSERT INTO escola_vagas (etapa_id, escola_id, qtd) VALUES (:etapa_id, :escola_id, :qtd)');
+                $this->db->query('INSERT INTO escola_vagas (etapa_id, escola_id, matutino, vespertino, integral) VALUES (:etapa_id, :escola_id, :matutino, :vespertino, :integral)');
             }
 
             
             // Bind values
             $this->db->bind(':etapa_id',$etapa_id);
             $this->db->bind(':escola_id',$escola_id);
-            $this->db->bind(':qtd',$qtd);                          
+            $this->db->bind(':matutino',$matutino);                          
+            $this->db->bind(':vespertino',$vespertino);  
+            $this->db->bind(':integral',$integral);  
 
             // Execute
             if($this->db->execute()){
@@ -70,7 +71,9 @@
             $this->db->query('SELECT 
                                     e.id,
                                     e.descricao,
-                                    (SELECT qtd FROM escola_vagas ev WHERE ev.etapa_id  = e.id  AND ev.escola_id = :escola_id) AS qtd
+                                    (SELECT matutino FROM escola_vagas ev WHERE ev.etapa_id  = e.id  AND ev.escola_id = :escola_id) AS matutino,
+                                    (SELECT vespertino FROM escola_vagas ev WHERE ev.etapa_id  = e.id  AND ev.escola_id = :escola_id) AS vespertino,
+                                    (SELECT integral FROM escola_vagas ev WHERE ev.etapa_id  = e.id  AND ev.escola_id = :escola_id) AS integral
                             FROM 
                                 etapa e'); 
 

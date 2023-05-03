@@ -192,6 +192,7 @@
       }
 
 
+      /*PRECISA MELHORAR ESSE CÓDIGO AQUI */
       public function edit($id){         
      
       //se o usuário não tiver feito login redirecionamos para o index

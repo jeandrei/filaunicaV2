@@ -15,7 +15,9 @@ CREATE TABLE `escola_vagas` (
   `id` int(11) NOT NULL,
   `etapa_id` int(11),
   `escola_id` int(11),
-  `qtd` int(11) DEFAULT 0
+  `matutino` int(11) DEFAULT 0,
+  `vespertino` int(11) DEFAULT 0,
+  `integral` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `escola_vagas`

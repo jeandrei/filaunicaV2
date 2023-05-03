@@ -43,7 +43,9 @@
                             $data['etapas'][] = [
                                 'id' => $row->id,
                                 'descricao' => $row->descricao,
-                                'qtd' => $row->qtd
+                                'matutino' => $row->matutino,
+                                'vespertino' => $row->vespertino,
+                                'integral' => $row->integral
                             ];     
                         }
                     } else {
@@ -73,8 +75,8 @@
              
         }
 
-        public function vagas($escola_id){            
-           
+        public function vagas($escola_id){
+                      
             if((!isLoggedIn()) && (!isAdmin() || !isUser() || !isSec())){ 
                 flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
                 redirect('users/login');
@@ -88,44 +90,78 @@
 
                 $data['post'] = [
                     'escola_id' => $escola_id,                 
-                    'escola_id_err' => ''                   
+                    'escola_id_err' => ''                                       
                 ]; 
                 
 
-                /*Vai verificar para cada post se foi passado a quantidade e se é numérico*/
-                foreach($_POST as $key => $valor){ 
-                    if((empty($valor) && $valor<>'0') || $valor==="" || $valor==='NULL'){
-                        $data['post']['escola_id_err'] = "Etapas sem informação!";
-                    } else if(!is_int(intval($valor)) || (intval($valor)==='NULL' && $valor <> '0')){
-                            $data['post']['escola_id_err'] = "Etapas com valor inválido!";
-                    } else {
-                        $data['escolavaga'][$key] = $valor;
-                    }
-                }                
+                /*Vai verificar para cada post se foi passado a quantidade e se é numérico*/ 
+                               
+                $etapas = $this->etapaModel->getEtapas();
+
+                foreach($etapas as $etapa){
+                    $matutino = $_POST['matutino_'.$etapa['id']];
+                    $vespertino = $_POST['vespertino_'.$etapa['id']];
+                    $integral = $_POST['integral_'.$etapa['id']];
+                        
+                    $erro = false;
+                    
+                    if(
+                        ($matutino == "") || (intval($matutino)<0) || (empty($matutino) || $matutino=='NULL' || !is_int(intval($matutino)))
+                    ){
+                        $erro = true;
+                    } 
+
+                    if(
+                        ($vespertino == "") || (intval($vespertino)<0) || (empty($vespertino) || $vespertino=='NULL' || !is_int(intval($vespertino)))
+                    ){
+                        $erro = true;
+                    } 
+
+                    if(
+                        ($integral == "") || (intval($integral)<0) || (empty($integral) || $integral=='NULL' || !is_int(intval($integral)))
+                    ){
+                        $erro = true;
+                    } 
+
+                    
+
+                }
+                
+                if($erro == true){
+                    $data['post']['escola_id_err'] = 'Valor inválido informado!';
+                }
+                         
 
                 if(                    
-                    empty($data['post']['escola_id_err'])
+                    empty($data['post']['escola_id_err']) 
+                   
                 ){
-                    try {
-                        foreach($data['escolavaga'] as $key => $qtd){
-                             if(!$this->escolaVagasModel->register($escola_id,$key,$qtd)){
+                    try { 
+                        foreach($etapas as $etapa){                          
+                          if(!$this->escolaVagasModel->register($escola_id,$etapa['id'],$_POST['matutino_'.$etapa['id']],$_POST['vespertino_'.$etapa['id']],$_POST['integral_'.$etapa['id']])){
                                 throw new Exception('Ops! Algo deu errado ao tentar gravar os dados!');
                             }  
-                        }
-                            flash('message', 'Cadastro realizado com sucesso!','success');
-                            $escola_vaga = $this->escolaVagasModel->getEscolaVagas($escola_id); 
-                            
-                            foreach ($escola_vaga as $row){
-                                $data['etapas'][] = [
-                                    'id' => $row->id,
-                                    'descricao' => $row->descricao,
-                                    'qtd' => $row->qtd
-                                ];     
-                            }
+                          
+                        }  
 
-                            $this->view('escolavagas/vagas', $data);
+                      
+                        flash('message', 'Cadastro realizado com sucesso!','success');
+                        $escola_vaga = $this->escolaVagasModel->getEscolaVagas($escola_id); 
+                        
+                        foreach ($escola_vaga as $row){
+                            $data['etapas'][] = [
+                                'id' => $row->id,
+                                'descricao' => $row->descricao,
+                                'matutino' => $row->matutino,
+                                'vespertino' => $row->vespertino,
+                                'integral' => $row->integral
+                            ];     
+                        }
+
+                        $this->view('escolavagas/vagas', $data);
 
                     } catch (Exception $e) {
+                        die('erro');
                         $erro = 'Erro: '.  $e->getMessage(). "\n";
                         flash('message', $erro,'error');
                         $this->view('escolasvagas/vagas',$data);
@@ -141,7 +177,9 @@
                         $data['etapas'][] = [
                             'id' => $row->id,
                             'descricao' => $row->descricao,
-                            'qtd' => $row->qtd 
+                            'matutino' => $row->matutino,
+                            'vespertino' => $row->vespertino,
+                            'integral' => $row->integral 
                         ];     
                     }
                 } else {
