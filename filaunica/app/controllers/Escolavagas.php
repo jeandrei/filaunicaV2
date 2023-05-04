@@ -97,35 +97,38 @@
                 /*Vai verificar para cada post se foi passado a quantidade e se é numérico*/ 
                                
                 $etapas = $this->etapaModel->getEtapas();
-
+                $erro = false;
                 foreach($etapas as $etapa){
                     $matutino = $_POST['matutino_'.$etapa['id']];
                     $vespertino = $_POST['vespertino_'.$etapa['id']];
                     $integral = $_POST['integral_'.$etapa['id']];
-                        
-                    $erro = false;
+                                       
+                                        
+                    if($matutino == ""){
+                        $erro = true;
+                    } else if(!is_numeric($matutino)){
+                        $erro = true;
+                    } else if ((intval($matutino)<0)){
+                        $erro = true;
+                    }
                     
-                    if(
-                        ($matutino == "") || (intval($matutino)<0) || (empty($matutino) || $matutino=='NULL' || !is_int(intval($matutino)))
-                    ){
+                    if($vespertino == ""){
                         $erro = true;
-                    } 
-
-                    if(
-                        ($vespertino == "") || (intval($vespertino)<0) || (empty($vespertino) || $vespertino=='NULL' || !is_int(intval($vespertino)))
-                    ){
+                    } else if(!is_numeric($vespertino)){
                         $erro = true;
-                    } 
-
-                    if(
-                        ($integral == "") || (intval($integral)<0) || (empty($integral) || $integral=='NULL' || !is_int(intval($integral)))
-                    ){
+                    } else if ((intval($vespertino)<0)){
                         $erro = true;
-                    } 
+                    }
+                     
+                    if($integral == ""){
+                        $erro = true;
+                    } else if(!is_numeric($integral)){
+                        $erro = true;
+                    } else if ((intval($integral)<0)){
+                        $erro = true;
+                    }                   
 
-                    
-
-                }
+                }                
                 
                 if($erro == true){
                     $data['post']['escola_id_err'] = 'Valor inválido informado!';
@@ -145,7 +148,7 @@
                         }  
 
                       
-                        flash('message', 'Cadastro realizado com sucesso!','success');
+                        flash('message', 'Dados gravados com sucesso!','success');
                         $escola_vaga = $this->escolaVagasModel->getEscolaVagas($escola_id); 
                         
                         foreach ($escola_vaga as $row){
@@ -160,8 +163,7 @@
 
                         $this->view('escolavagas/vagas', $data);
 
-                    } catch (Exception $e) {
-                        die('erro');
+                    } catch (Exception $e) {                        
                         $erro = 'Erro: '.  $e->getMessage(). "\n";
                         flash('message', $erro,'error');
                         $this->view('escolasvagas/vagas',$data);
