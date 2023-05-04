@@ -362,7 +362,7 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
             <div class="row">
                 <div class="col-sm-4">
                     <b>Vagas</b>
-                    <?php if($registro['opcao1_id']) : ?>
+                    <?php if($registro['opcao1_id']) : ?>                        
                         Mat. (<?php echo ($registro['vagas_op1']->matutino)?$registro['vagas_op1']->matutino:'NI'?>)  
                         Vesp. (<?php echo ($registro['vagas_op1']->vespertino)?$registro['vagas_op1']->vespertino:'NI'?>)
                         Int. (<?php echo ($registro['vagas_op1']->integral)?$registro['vagas_op1']->integral:'NI'?>)

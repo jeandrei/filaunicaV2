@@ -4,7 +4,7 @@
 
 <h3>Relatório de Matrículas Mensal</h3> 
 
-<form action="<?php echo URLROOT; ?>/admins/relatorioMensal" method="post" enctype="multipart/form-data">
+<form action="<?php echo URLROOT; ?>/admins/relatorioMensal" target="_blank" method="post" enctype="multipart/form-data">
 
     <!-- 1ª LINHA E COLUNAS PARA OS CAMPOS DE BUSCA -->
     <div class="row mb-2">

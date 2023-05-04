@@ -7,6 +7,7 @@
           $this->etapaModel = $this->model('Etapa');           
           $this->situacaoModel = $this->model('Situacao'); 
           $this->escolaVagasModel = $this->model('Escolavaga');
+          $this->escolaModel = $this->model('Escola');
         }
 
         public function index(){ 
@@ -541,6 +542,39 @@
         } 
         $this->view('relatorios/relatorioaguardandoalfabetica',$data);
   }  
+
+
+  public function relatorioQuadrodeVagas(){    
+    
+    if((!isLoggedIn())){ 
+      flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+      redirect('users/login');
+      die();
+    } else if ((!isAdmin()) && (!isUser())){                
+      flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+      redirect('pages/sistem'); 
+      die();
+    }  
+   
+    $escolas = $this->escolaModel->getEscolas();
+    $etapas = $this->etapaModel->getEtapas();
+    
+
+    foreach($escolas as $escola){ 
+      foreach($etapas as $etapa){        
+        $quadroVagas = $this->escolaVagasModel->getEscolaVagasEtapa($escola->id,$etapa['id']);
+        $data[] = [
+          'escola_id' => $escola->id,
+          'escola' => $escola->nome,
+          'etapa' => $this->etapaModel->getEtapaById($etapa['id'])->descricao, 
+          'matutino' => $quadroVagas->matutino,
+          'vespertino' => $quadroVagas->vespertino,
+          'integral' => $quadroVagas->integral
+        ];
+      }                
+    }     
+    $this->view('relatorios/relatorioQuadrodeVagas',$data);
+}  
     
 
   public function gravaobsadmin(){

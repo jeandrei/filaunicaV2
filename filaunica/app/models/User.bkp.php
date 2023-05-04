@@ -201,41 +201,5 @@
             
         }
 
-        public function getUsersPag($page,$options){ 
-            $sql = "SELECT id,name,email,type FROM users WHERE 1";    
-            
-    
-            
-             if(!empty($options['named_params'][':name'])){
-                $sql .= " AND name LIKE '%" . $options['named_params'][':name']."%'";
-            } 
-
-            if(!empty($options['named_params'][':type'])){
-                $sql .= " AND type = '" . $options['named_params'][':type']."'";
-            }     
-           
-
-
-            $sql .= ' ORDER BY users.name ASC ';  
-                 
-    
-            //TENTA EXECUTAR A PAGINAÇÃO 
-            try
-            {
-                $this->pag = new Pagination($page,$sql, $options);  
-            }
-            catch(paginationException $e)
-            {
-                echo $e;
-                exit();
-            }       
-            
-            //EXECUTA A PAGINAÇÃO
-            $this->pag->execute();
-            //RETORNA A PAGINAÇÃO
-            return $this->pag;      
-            
-        } 
-
     }
 ?>

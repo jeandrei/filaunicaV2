@@ -12,58 +12,8 @@
                 flash('message', 'Você ser um administrador para ter acesso a esta página!', 'error'); 
                 redirect('pages/sistem');
                 die();
-            }  
+            }   
             
-            
-            if(isset($_GET['page']))  
-            {  
-                $page = $_GET['page'];  
-            }  
-            else  
-            {  
-                $page = 1;  
-            }  
-
-
-            $options = array(
-                'results_per_page' => 2,
-                'url' => URLROOT . '/users/index.php?page=*VAR*&name=' . $_GET['name'] .'&type'. $_GET['type'],
-                'using_bound_params' => true,
-                'named_params' => array(
-                                    ':name' => $_GET['name'],
-                                    ':type' => $_GET['type']                         
-                                    )     
-            );
-
-            $pagination = $this->userModel->getUsersPag($page,$options); 
-
-            if($pagination->success == true){
-                //Aqui passo apenas a paginação
-                $data['pagination'] = $pagination; 
-               
-                
-                //Aqui pego apenas os resultados do banco de dados
-                $results = $pagination->resultset->fetchAll();
-                
-                
-                //Monto o array data['results'][] com os resultados
-                if(!empty($results)){
-                    foreach($results as $row){
-                        $data['results'][] = [
-                            'id'   => $row['id'],
-                            'name' => $row['name'],
-                            'email' => $row['email'],
-                            'type' => $row['type']
-                        ];
-                    }
-                }
-                     
-            } else {
-                $data['results'] = false;
-            }
-            
-            $this->view('users/index', $data);
-            die();
             
             if($data = $this->userModel->getUsers()){  
                 $this->view('users/index', $data);                

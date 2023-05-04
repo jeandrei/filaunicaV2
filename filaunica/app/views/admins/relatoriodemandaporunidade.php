@@ -4,7 +4,7 @@
 
 <h3>Relatório de Demanda por Unidade</h3> 
 
-<form action="<?php echo URLROOT; ?>/admins/relatorioDemanda" method="post" enctype="multipart/form-data">
+<form action="<?php echo URLROOT; ?>/admins/relatorioDemanda" target="_blank" method="post" enctype="multipart/form-data">
 
     <!-- COLUNA 1 ESCOLA -->
     <div class="col-md-4">
