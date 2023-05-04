@@ -76,8 +76,15 @@
                     'situacao' => $this->situacaoModel->getDescricaoSituacaoById($result['situacao_id']),                  
                     'situacao_id' => $result['situacao_id'],
                     'opcao1_id' => $this->filaModel->getEscolasById($result['opcao1_id'])->nome,
+
+                    'vagas_op1' => $this->escolaVagasModel->getEscolaVagasEtapa($result['opcao1_id'],$this->etapaModel->getEtapaId($result['nascimento'])),
+
                     'opcao2_id' => $this->filaModel->getEscolasById($result['opcao2_id'])->nome,
+                    'vagas_op2' => $this->escolaVagasModel->getEscolaVagasEtapa($result['opcao2_id'],$this->etapaModel->getEtapaId($result['nascimento'])),
+
                     'opcao3_id' => $this->filaModel->getEscolasById($result['opcao3_id'])->nome,
+                    'vagas_op3' => $this->escolaVagasModel->getEscolaVagasEtapa($result['opcao3_id'],$this->etapaModel->getEtapaId($result['nascimento'])),
+
                     'opcao_matricula' => $this->filaModel->getEscolasById($result['opcao_matricula'])->nome,
                     'opcao_turno' => $this->filaModel->getTurno($result['opcao_turno']),
                     'turno_matricula' => $this->filaModel->getTurno($result['turno_matricula']),

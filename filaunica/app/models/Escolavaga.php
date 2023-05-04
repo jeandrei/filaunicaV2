@@ -103,6 +103,7 @@
                 return false;
             }
         }
+        
 
 
         public function atualizaVaga($escola_id, $etapa_id, $turno){            

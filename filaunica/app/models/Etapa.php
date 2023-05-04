@@ -88,6 +88,8 @@
             } 
         }
 
+        
+
         // RETORNA O ID DE UMA ETAPA A PARTIR DA DATA DE NASCIMENTO
         public function getEtapaId($nasc) {  
             //pega o id da etapa
