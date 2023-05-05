@@ -46,10 +46,10 @@ h1 {
   margin: 30px 0 0;
 }
 
-
 .faq.active .faq-text {
   display: block;
 }
+
 
 .faq-toggle {
   background-color: transparent;
@@ -88,6 +88,18 @@ h1 {
 .faq.active .faq-toggle {
   background-color: #9fa4a8;
 }
+
+
+
+.historico{    
+    display: none;
+    clear: both;
+}
+
+.historico.active {
+    display: block;      
+}
+
    
 </style>
 <?php require APPROOT . '/views/inc/header.php'; ?>
@@ -410,10 +422,44 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
             </div>
             <div class="row mt-3">
                 <div class="col-12">
-                    <a href="<?php echo URLROOT; ?>/admins/edit/<?php echo  $registro['id'];?>" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i> Editar</a>
-                    <a href="<?php echo URLROOT; ?>/admins/historico/<?php echo  $registro['id'];?>" target="_blank" class="btn btn-warning btn-sm"><i class="fa fa-list"></i> Histórico</a>  
+                    <a href="<?php echo URLROOT; ?>/admins/edit/<?php echo  $registro['id'];?>" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i> Editar</a>   
+                    <button type='button' class='btn btn-info btn-sm btn-historico'><i class="fa fa-eye"></i> Histórico</button>
                 </div>                 
-            </div>                   
+            </div>                             
+            <!-- HISTÓRICO -->            
+            <div class="historico">
+                <!-- ROW -->
+                <div class="row mt-3">
+                    <!-- COL -->
+                    <div class="col-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>                        
+                            <th scope="col">Registro</th>
+                            <th scope="col">Usuário</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Histórico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 0; ?>
+                            <?php foreach($registro['historico'] as $row) :?>
+                            <tr>
+                                <td><?php echo $registro['historico'][$i]['registro'];?></td>
+                                <td><?php echo $registro['historico'][$i]['usuario'];?></td>
+                                <td><?php echo $this->situacaoModel->getDescricaoSituacaoById( $registro['historico'][$i]['situacao_id']);?></td>
+                                <td><?php echo $registro['historico'][$i]['historico'];?></td>
+                            </tr> 
+                            <?php $i++;?>
+                            <?php endforeach; ?>                       
+                        </tbody>
+                    </table>  
+                    </div>
+                    <!-- COL -->
+                </div>
+                <!-- ROW -->           
+            </div>            
+            <!-- HISTÓRICO -->            
         </div>
             
            
@@ -422,6 +468,7 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
           <i class="fas fa-chevron-down"></i>
           <i class="fas fa-times"></i>
         </button>
+        
       </div>
         
     <?php endforeach; ?>
@@ -451,6 +498,19 @@ toggles.forEach(toggle => {
         toggle.parentNode.classList.toggle('active')
     })
 })
+
+const toggleshistorico = document.querySelectorAll('.btn-historico');
+
+
+toggleshistorico.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        console.log(toggle.parentNode.parentNode.parentNode.lastElementChild);
+        toggle.parentNode.parentNode.parentNode.lastElementChild.classList.toggle('active')
+    })
+})
+
+
+
 
 /* script executa a cada 3 segundos a variavel timer e a 
     constante waitTimer tem que ficar fora da função */

@@ -93,7 +93,8 @@
                     'obs_admin' => $result['obs_admin'],
                     'deficiencia' => (($result['deficiencia'] == 0)?'NÃO':'SIM'),
                     'logradouro' => $result['logradouro'],
-                    'bairro' => $this->filaModel->getBairroByid($result['bairro_id'])
+                    'bairro' => $this->filaModel->getBairroByid($result['bairro_id']),
+                    'historico' => $this->adminModel->getHistoricoById($result['id'])
                   ];
                 }
               } else {
