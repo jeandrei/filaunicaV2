@@ -115,7 +115,7 @@ function limpar(){
                 </tr>
             <?php endforeach; ?> 
         <?php else : ?>  
-            <tr>
+        <tr>
             <td colspan="4" class="text-center">
                 Nenhuma usuário encontrado
             </td>

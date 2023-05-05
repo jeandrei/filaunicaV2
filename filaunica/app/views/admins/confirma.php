@@ -57,7 +57,7 @@
             <button type="submit" name="botao" id="botao" value="atualizavaga" class="btn btn-danger">Atualizar</button>
         </div>
         <?php else: ?>
-            <a href="<?php echo URLROOT; ?>/admins/index" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Voltar</a>
+            <a href="<?php echo URLROOT; ?>/admins/edit/<?php echo $data['id']; ?>" class="btn btn-light mt-3"><i class="fa fa-backward"></i>Voltar</a>
         <?php endif;?>
 
     </form>
