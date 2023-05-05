@@ -1,5 +1,107 @@
 
+<style>
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Muli', sans-serif;
+  background-color: #f0f0f0;
+}
+
+h1 {
+  margin: 50px 0 30px;
+  text-align: center;
+}
+
+.faq-container {
+  max-width: auto;
+  margin: 10 10;
+}
+
+.faq {
+  background-color: transparent;
+  border: 1px solid #9fa4a8;
+  border-radius: 10px;
+  margin: 5px 0;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+
+.faq.active {
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.faq-title {
+  margin: 0 35px 0 0;
+}
+
+.faq-text {
+  display: none;
+  margin: 30px 0 0;
+}
+
+.faq.active .faq-text {
+  display: block;
+}
+
+
+.faq-toggle {
+  background-color: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  padding: 0;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  height: 30px;
+  width: 30px;
+}
+
+.faq-toggle:focus {
+  outline: 0;
+}
+
+.faq-toggle .fa-times {
+  display: none;
+}
+
+.faq.active .faq-toggle .fa-times {
+  color: #fff;
+  display: block;
+}
+
+.faq.active .faq-toggle .fa-chevron-down {
+  display: none;
+}
+
+.faq.active .faq-toggle {
+  background-color: #9fa4a8;
+}
+
+
+
+.historico{    
+    display: none;
+    clear: both;
+}
+
+.historico.active {
+    display: block;      
+}
+
+   
+</style>
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
 <?php  
@@ -14,27 +116,7 @@
 
 
 
-<script>
-    
-    function limpar(){        
-        document.getElementById('nome').value = "";
-        document.getElementById('protocolo').value = "";        
-        document.getElementById('etapa_id').value = "Todos";
-        document.getElementById('situacao_id').value = "Todos";
-        document.getElementById('escola_id').value = "Todos";        
-        focofield("nome");
-    }    
-    
-    window.onload = function(){
-        focofield("nome");
-    }     
 
-        
-    //PARA ABRIR EM UMA NOVA ABA CRIO ESSA FUNÇÃO NEWTAB QUE É CHAMADA NO EVENTO ONCLICK DO BOTÃO IMPRIMIR
-    function newtab(){
-      document.getElementById('filtrar').setAttribute('target', '_blank');
-    }
-</script>
 
 
 <!-- LINHA PARA A MENSÁGEM DO JQUERY -->
@@ -179,10 +261,10 @@
 
         <div class="col-md-6 align-self-end mt-2" style="padding-left:5;">
            
-                <input type="submit" class="btn btn-primary" value="Atualizar">                   
+                <input type="submit" class="btn btn-primary" value="Atualizar" onClick="salfTab()">                   
                 <input type="button" class="btn btn-primary" value="Limpar" onClick="limpar()"> 
                 <input type="submit" name="botao" class="btn btn-primary" value="Imprimir" onClick="newtab()">
-                                                       
+                                                      
         </div>
                                     
                                     
@@ -215,132 +297,182 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
 ?>
 <br>
 <!-- AQUI VOU MONTAR OS CARDS -->
+<div class="faq-container">
     <?php foreach ($result as $registro): ?>
-        <div class="card">
-            
-            <div 
-                class="card-header"
-                id="linha_<?php echo $registro['id'];?>"
-                style="background-color:<? echo $this->situacaoModel->getCorSituacaoById($registro['situacao_id']);?>">     
-                
-                    <div class="row">
-                        <div class="col-sm-10">
-                            Posição: <b><?php echo $registro['posicao']; ?></b> | Protocolo: <?php echo $registro['protocolo']; ?> | Registro: <?php echo $registro['registro']; ?> | Status: <?php echo $registro['situacao'];?>
-                        </div>                                        
-                    </div> 
-
-            </div>
-
-
-            <div class="card-body">
-                
-                
-                <h5 class="card-title"><?php echo $registro['nomecrianca']; ?> | Idade: <?php echo CalculaIdade($registro['nascimento']);?>  </h5>   
-                
-                <!--1ª Linha do card-->
-                <div class="row">
-                    <div class="col-sm-2">
-                        Nascimento: <?php echo $registro['nascimento']; ?>
-                    </div>
-                    <div class="col-sm-2">
-                        Etapa: <?php echo $registro['etapa']; ?>
-                    </div>
-                    <div class="col-sm-2">
-                        Turno: <?php echo $registro['opcao_turno']; ?>
-                    </div>
-                    
-                </div>
-
-                <!--2ª Linha do card-->
-                <div class="row">
-                    <div class="col-sm-4">
-                        Responsável: <?php echo $registro['responsavel']; ?>
-                    </div>
-                    <div class="col-sm-2">
-                        Telefone: <?php echo $registro['telefone']; ?>
-                    </div>
-                    <div class="col-sm-2">
-                        Celular: <?php echo $registro['celular']; ?>
-                    </div>                
-                </div>                  
-                
-                <!--3ª Linha do card-->
-                <div class="row">
-                    <div class="col-sm-4">
-                        Opção 1: <?php echo $registro['opcao1_id']; ?>                        
-                    </div>
-                    <div class="col-sm-4">
-                        Opção 2: <?php echo $registro['opcao2_id']; ?>
-                    </div>
-                    <div class="col-sm-4">
-                        Opção 3: <?php echo $registro['opcao3_id']; ?>
-                    </div>
-                </div>
-                
-                <!--4ª Linha do card-->
-                <div class="row">
-                    <div class="col-sm-8">
-                        <?php if($registro['situacao_id'] == 2 || $registro['situacao_id'] == 5){
-                            echo "Escola em que a criança foi matriculada/convocada: <b>" . $registro['opcao_matricula'] . "</b>";}
-                            ?>                      
-                    </div>  
-
-                    <div class="col-sm-4">
-                        <?php if($registro['situacao_id'] == 2 || $registro['situacao_id'] == 5){
-                            echo "Turno da matricula/convocação: " ."<b>" . $registro['turno_matricula'] . "</b>";}
-                            ?>                      
-                    </div>                   
-                </div>
-                
-                <hr>
-
-                <div class="row">
-                    <div class="col-6">
-                        <div class="col-sm-12">Última informação do histórico: <?php echo $registro['ultimo_historico']; ?></div>
-                    </div>
-                    <div class="col-1">
-                        <label for="observacao">
-                            Observação:
-                        </label>
-                    </div>
-                    <div class="col-5">   
-                        
-                        <input 
-                            type="text" 
-                            name="observacao" 
-                            id="<?php echo $registro['id'];?>" 
-                            maxlength="50"
-                            class="form-control"
-                            value="<?php if(isset($registro['obs_admin'])){htmlout($registro['obs_admin']);} ?>"
-                            onkeydown="upperCaseF(this)"   
-                            onkeyup="update(this.id,this.value)"
-                        >
-                        <span id="<?php echo $registro['id'];?>_msg">
-                                
-                        </span>
-                    </div>
-                </div>
-                
-                
-                <hr>
-
-                <!--BOTÕES-->
-
-                <!-- LINHA PARA OS BOTÕES -->
-                <div class="row" style="margin-top:30px;">
-                    <div class="col-md-12 text-center">                        
-                        <a href="<?php echo URLROOT; ?>/admins/edit/<?php echo  $registro['id'];?>" class="btn btn-primary btn-sm">Editar</a>
-                        <a href="<?php echo URLROOT; ?>/admins/historico/<?php echo  $registro['id'];?>" class="btn btn-warning btn-sm">Histórico</a>
-                    </div>  
-                <!-- FIM LINHA BOTÕES -->
-                </div> 
-
-            </div><!--<div class="card-body">-->
-
+        <div class="faq"
+        id="linha_<?php echo $registro['id'];?>"
+        style="border-left: solid 10px <? echo $this->situacaoModel->getCorSituacaoById($registro['situacao_id']);?>"
+        >
         
-        </div><!-- <div class="card">-->
+        
+        <h class="faq-title">
+            <div class="row">
+                <div class="col-8">
+                <?php echo $registro['posicao'] .' '.$registro['nomecrianca'] .' protocolo nº<b> '. $registro['protocolo'] .'</b>';?>
+                </div>
+                <div class="col-2">
+                    <?php echo $registro['situacao'];?> 
+                </div>                             
+            </div>
+            
+        </h>
+
+        <div class="faq-text">
+
+            <div class="row">
+                <div class="col-3">
+                    <b>Registro:</b> <?php echo $registro['registro']; ?>
+                </div>     
+                <div class="col-5">
+                    <b>Logradouro:</b> <?php echo $registro['logradouro']; ?>
+                </div>
+                <div class="col-3">
+                    <b>Bairro:</b> <?php echo $registro['bairro']; ?>
+                </div>                
+            </div>  
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <b>Nascimento:</b> <?php echo $registro['nascimento']; ?>
+                </div>
+                <div class="col-sm-5">
+                    <b>Idade:</b> <?php echo CalculaIdade($registro['nascimento']);?>
+                </div>
+                <div class="col-sm-2">
+                    <b>Etapa:</b> <?php echo $registro['etapa']; ?>
+                </div> 
+                <div class="col-sm-2">
+                    <b>Especial:</b> <?php echo $registro['deficiencia']; ?>
+                </div>  
+            </div>   
+            <div class="row">
+                <div class="col-sm-6">
+                    <b>Responsável:</b> <?php echo $registro['responsavel']; ?>
+                </div>
+                <div class="col-sm-2">
+                    <b>Telefone:</b> <?php echo $registro['telefone']; ?>
+                </div> 
+                <div class="col-sm-2">
+                    <b>Celular:</b> <?php echo $registro['celular']; ?>
+                </div>  
+                <div class="col-sm-2">
+                    <b>Turno:</b> <?php echo $registro['opcao_turno']; ?>
+                </div> 
+            </div>  
+            <div class="row">
+                <div class="col-sm-4">
+                    <b>Opção 1:</b> <?php echo $registro['opcao1_id']; ?>    
+                </div>
+                <div class="col-sm-4">
+                    <b>Opção 2:</b> <?php echo $registro['opcao2_id']; ?>
+                </div> 
+                <div class="col-sm-4">
+                    <b>Opção 3:</b> <?php echo $registro['opcao3_id']; ?>
+                </div>  
+            </div> 
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <b>Vagas</b>
+                    <?php if($registro['opcao1_id']) : ?>                        
+                        Mat. (<?php echo ($registro['vagas_op1']->matutino)?$registro['vagas_op1']->matutino:'NI'?>)  
+                        Vesp. (<?php echo ($registro['vagas_op1']->vespertino)?$registro['vagas_op1']->vespertino:'NI'?>)
+                        Int. (<?php echo ($registro['vagas_op1']->integral)?$registro['vagas_op1']->integral:'NI'?>)
+                    <?php endif; ?>
+                </div>
+                <div class="col-sm-4">
+                <b>Vagas</b>
+                    <?php if($registro['opcao2_id']) : ?>
+                        Mat. (<?php echo ($registro['vagas_op2']->matutino)?$registro['vagas_op2']->matutino:'NI'?>)  
+                        Vesp. (<?php echo ($registro['vagas_op2']->vespertino)?$registro['vagas_op2']->vespertino:'NI'?>)
+                        Int. (<?php echo ($registro['vagas_op2']->integral)?$registro['vagas_op2']->integral:'NI'?>)
+                    <?php endif; ?>
+                </div> 
+                <div class="col-sm-4">
+                <b>Vagas</b>
+                    <?php if($registro['opcao2_id']) : ?>
+                        Mat. (<?php echo ($registro['vagas_op3']->matutino)?$registro['vagas_op3']->matutino:'NI'?>)  
+                        Vesp. (<?php echo ($registro['vagas_op3']->vespertino)?$registro['vagas_op3']->vespertino:'NI'?>)
+                        Int. (<?php echo ($registro['vagas_op3']->integral)?$registro['vagas_op3']->integral:'NI'?>)
+                    <?php endif; ?>
+                </div>  
+            </div> 
+            <div class="row">
+                <div class="col-12">
+                    <b>Último registro do histórico:</b> <?php echo $registro['ultimo_historico']; ?>    
+                </div>                 
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <b>Observação:</b> 
+                    <input 
+                        type="text" 
+                        name="observacao" 
+                        id="<?php echo $registro['id'];?>" 
+                        maxlength="50"
+                        class="form-control"
+                        value="<?php if(isset($registro['obs_admin'])){htmlout($registro['obs_admin']);} ?>"
+                        onkeydown="upperCaseF(this)"   
+                        onkeyup="update(this.id,this.value)"
+                    >
+                    <span id="<?php echo $registro['id'];?>_msg">
+                            
+                    </span>    
+                </div>                  
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <a href="<?php echo URLROOT; ?>/admins/edit/<?php echo  $registro['id'];?>" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i> Editar</a>   
+                    <button type='button' class='btn btn-info btn-sm btn-historico'><i class="fa fa-eye"></i> Histórico</button>
+                </div>                 
+            </div>                             
+            <!-- HISTÓRICO -->            
+            <div class="historico">
+                <!-- ROW -->
+                <div class="row mt-3">
+                    <!-- COL -->
+                    <div class="col-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>                        
+                            <th scope="col">Registro</th>
+                            <th scope="col">Usuário</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Histórico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 0; ?>
+                            <?php foreach($registro['historico'] as $row) :?>
+                            <tr>
+                                <td><?php echo $registro['historico'][$i]['registro'];?></td>
+                                <td><?php echo $registro['historico'][$i]['usuario'];?></td>
+                                <td><?php echo $this->situacaoModel->getDescricaoSituacaoById( $registro['historico'][$i]['situacao_id']);?></td>
+                                <td><?php echo $registro['historico'][$i]['historico'];?></td>
+                            </tr> 
+                            <?php $i++;?>
+                            <?php endforeach; ?>                       
+                        </tbody>
+                    </table>  
+                    </div>
+                    <!-- COL -->
+                </div>
+                <!-- ROW -->           
+            </div>            
+            <!-- HISTÓRICO -->            
+        </div>
+            
+           
+
+        <button class="faq-toggle">
+          <i class="fas fa-chevron-down"></i>
+          <i class="fas fa-times"></i>
+        </button>
+        
+      </div>
         
     <?php endforeach; ?>
+</div><!-- faq-containers -->
 <!-- FIM DOS CARDS -->
 
 <?php
@@ -357,7 +489,30 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
 </html>
 
 <script>
-    /* script executa a cada 3 segundos a variavel timer e a 
+    
+
+const toggles = document.querySelectorAll('.faq-toggle');
+
+toggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        toggle.parentNode.classList.toggle('active')
+    })
+})
+
+const toggleshistorico = document.querySelectorAll('.btn-historico');
+
+
+toggleshistorico.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        console.log(toggle.parentNode.parentNode.parentNode.lastElementChild);
+        toggle.parentNode.parentNode.parentNode.lastElementChild.classList.toggle('active')
+    })
+})
+
+
+
+
+/* script executa a cada 3 segundos a variavel timer e a 
     constante waitTimer tem que ficar fora da função */
     let timer;
     const waitTimer = 3000;
@@ -385,6 +540,29 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
                 });//Fecha o ajax       
             });//Fecha document ready function
         }, waitTimer);
+    }
+
+
+    function limpar(){        
+        document.getElementById('nome').value = "";
+        document.getElementById('protocolo').value = "";        
+        document.getElementById('etapa_id').value = "Todos";
+        document.getElementById('situacao_id').value = "Todos";
+        document.getElementById('escola_id').value = "Todos";        
+        focofield("nome");
+    }   
+
+
+    window.onload = function(){
+        focofield("nome");
+    }  
+
+    function newtab(){
+      document.getElementById('filtrar').setAttribute('target', '_blank');
+    }
+
+    function salfTab(){
+      document.getElementById('filtrar').setAttribute('target', '_self');
     }
 </script>
 

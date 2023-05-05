@@ -442,16 +442,24 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $i = 0; ?>
-                            <?php foreach($registro['historico'] as $row) :?>
+                            <?php if($registro['historico']) : ?>
+                                <?php $i = 0; ?>
+                                <?php foreach($registro['historico'] as $row) :?>
+                                <tr>
+                                    <td><?php echo $registro['historico'][$i]['registro'];?></td>
+                                    <td><?php echo $registro['historico'][$i]['usuario'];?></td>
+                                    <td><?php echo $this->situacaoModel->getDescricaoSituacaoById( $registro['historico'][$i]['situacao_id']);?></td>
+                                    <td><?php echo $registro['historico'][$i]['historico'];?></td>
+                                </tr> 
+                                <?php $i++;?>
+                                <?php endforeach; ?> 
+                            <?php else : ?>                      
                             <tr>
-                                <td><?php echo $registro['historico'][$i]['registro'];?></td>
-                                <td><?php echo $registro['historico'][$i]['usuario'];?></td>
-                                <td><?php echo $this->situacaoModel->getDescricaoSituacaoById( $registro['historico'][$i]['situacao_id']);?></td>
-                                <td><?php echo $registro['historico'][$i]['historico'];?></td>
-                            </tr> 
-                            <?php $i++;?>
-                            <?php endforeach; ?>                       
+                                <td colspan="4" class="text-center">
+                                    Nenhuma histórico registrado
+                                </td>
+                            </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>  
                     </div>
