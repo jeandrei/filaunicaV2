@@ -1,6 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+
 <h1>Histórico</h1>
-<a href="<?php echo URLROOT; ?>/admins" class="btn btn-light mt-3" style="margin:2em 0;"><i class="fa fa-backward"></i>Voltar</a>
+<a href="<?php echo URLROOT; ?>/admins" class="btn btn-light mt-3" style="margin:2em 0;"><i class="fa fa-backward"></i> Voltar para o início</a>
 
 <br>
 

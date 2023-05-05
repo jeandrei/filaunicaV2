@@ -411,7 +411,7 @@ if($data['results'] == false){ die('<div class="container alert alert-warning">S
             <div class="row mt-3">
                 <div class="col-12">
                     <a href="<?php echo URLROOT; ?>/admins/edit/<?php echo  $registro['id'];?>" class="btn btn-primary btn-sm"><i class="fa fa-pen"></i> Editar</a>
-                    <a href="<?php echo URLROOT; ?>/admins/historico/<?php echo  $registro['id'];?>" class="btn btn-warning btn-sm"><i class="fa fa-list"></i> Histórico</a>  
+                    <a href="<?php echo URLROOT; ?>/admins/historico/<?php echo  $registro['id'];?>" target="_blank" class="btn btn-warning btn-sm"><i class="fa fa-list"></i> Histórico</a>  
                 </div>                 
             </div>                   
         </div>
