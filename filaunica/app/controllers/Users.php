@@ -26,7 +26,7 @@
 
 
             $options = array(
-                'results_per_page' => 2,
+                'results_per_page' => 10,
                 'url' => URLROOT . '/users/index.php?page=*VAR*&name=' . $_GET['name'] .'&type'. $_GET['type'],
                 'using_bound_params' => true,
                 'named_params' => array(
