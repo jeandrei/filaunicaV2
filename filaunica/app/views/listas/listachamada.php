@@ -60,42 +60,39 @@ class PDF extends FPDF
             
            
             //para cada etapa que retornar no banco de dados
-            foreach($etapas as $etapa){                
-                $pdf->AddPage('L');
-                $pdf->SetFont('Arial','B',12);
-                $pdf->Cell(0, 5,utf8_decode("Listagem " . $etapa['descricao']), 0, 1, "C");
-                $pdf->Ln(10);   
-                $i=0;
-                foreach($colunas as $coluna){
-                    $i++;
-                    $pdf->SetFont('Arial','B',8);                   
-                    $pdf->Cell($larguracoll[$i],$tam_fonte,utf8_decode($coluna),1);
-                }
+            if($etapas){
+                foreach($etapas as $etapa){                
+                    $pdf->AddPage('L');
+                    $pdf->SetFont('Arial','B',12);
+                    $pdf->Cell(0, 5,utf8_decode("Listagem " . $etapa['descricao']), 0, 1, "C");
+                    $pdf->Ln(10);   
+                    $i=0;
+                    foreach($colunas as $coluna){
+                        $i++;
+                        $pdf->SetFont('Arial','B',8);                   
+                        $pdf->Cell($larguracoll[$i],$tam_fonte,utf8_decode($coluna),1);
+                    }
 
-                $registros = $this->filaModel->classificacaoPorEtapa($etapa['id']);
-                                       
-                                
-                if($registros){
-                    foreach($registros as $row) {  
-                        $pdf->Ln();                                            
-                        $pdf->Cell($larguracoll[1],$tam_fonte,utf8_decode($row->posicao  . 'º'),1);
-                        $pdf->Cell($larguracoll[2],$tam_fonte,utf8_decode( date('d/m/Y H:i:s', strtotime($row->registro))),1);
-                        $pdf->Cell($larguracoll[3],$tam_fonte,utf8_decode($row->responsavel),1);
-                        $pdf->Cell($larguracoll[4],$tam_fonte,utf8_decode(iniciais($row->nomecrianca)),1);
-                        $pdf->Cell($larguracoll[5],$tam_fonte,utf8_decode(formatadata($row->nascimento)),1);
-                        $pdf->Cell($larguracoll[6],$tam_fonte,utf8_decode($row->protocolo),1);
-                        
+                    $registros = $this->filaModel->classificacaoPorEtapa($etapa['id']);
+                                        
+                                    
+                    if($registros){
+                        foreach($registros as $row) {  
+                            $pdf->Ln();                                            
+                            $pdf->Cell($larguracoll[1],$tam_fonte,utf8_decode($row->posicao  . 'º'),1);
+                            $pdf->Cell($larguracoll[2],$tam_fonte,utf8_decode( date('d/m/Y H:i:s', strtotime($row->registro))),1);
+                            $pdf->Cell($larguracoll[3],$tam_fonte,utf8_decode($row->responsavel),1);
+                            $pdf->Cell($larguracoll[4],$tam_fonte,utf8_decode(iniciais($row->nomecrianca)),1);
+                            $pdf->Cell($larguracoll[5],$tam_fonte,utf8_decode(formatadata($row->nascimento)),1);
+                            $pdf->Cell($larguracoll[6],$tam_fonte,utf8_decode($row->protocolo),1);
+                            
+                        } 
                     } 
-                } else {
-                    die('Sem daos para emitir');
-                }
-                
 
-                
-
-               
-
-            }//END FOREACH 
+                }//END FOREACH 
+            } else {
+                die('Sem dados para emitir');
+            }
 
            
             

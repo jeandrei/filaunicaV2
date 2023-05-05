@@ -511,8 +511,7 @@ const toggleshistorico = document.querySelectorAll('.btn-historico');
 
 
 toggleshistorico.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-        console.log(toggle.parentNode.parentNode.parentNode.lastElementChild);
+    toggle.addEventListener('click', () => {        
         toggle.parentNode.parentNode.parentNode.lastElementChild.classList.toggle('active')
     })
 })
