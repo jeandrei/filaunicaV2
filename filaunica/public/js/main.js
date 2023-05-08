@@ -83,6 +83,17 @@ jQuery.validator.addMethod("validatel",
     "Telefone inválido"
 );
 
+/**SELECT
+ * Validação de select field
+ * O primeiro options do select o default tem que estar como null
+ * <option value="null">Selecione o Bairro</option>
+ * a validação é adicionada no rules e messages do jqueryvalidation 
+ */
+$.validator.addMethod("selectone", function(value, element, arg){
+    return arg !== value;
+}, "Value must not equal arg.");
+  
+
 
 
 // FUNÇÃO PARA ADICIONAR CLASSE
@@ -261,3 +272,5 @@ function createNotification(message = null, type = null) {
     notif.remove()
   }, 3000)
 }
+
+

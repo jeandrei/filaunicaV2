@@ -262,7 +262,7 @@
                     'bairro_id_err' => '',
                     'logradouro_err' => '',                   
                     'emAtividade_err' => ''                    
-                ];
+                ];                
                 // Load view
                 $this->view('escolas/edit', $data);
             } 

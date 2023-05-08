@@ -10,6 +10,8 @@ ALTER TABLE userrole CHANGE roleid escolaid INT(11);
   
 ALTER TABLE userrole RENAME userescola;
 
+ALTER TABLE escola MODIFY numero CHAR(11) DEFAULT NULL;
+
 
 CREATE TABLE `escola_vagas` (
   `id` int(11) NOT NULL,

@@ -6,7 +6,7 @@
         <div class="card card-body bg-ligth mt-5">
             <h2>Registrar uma situação</h2>
             <p>Por favor informe os dados da nova situação</p>
-            <form action="<?php echo URLROOT; ?>/situacoes/new" method="post">                
+            <form id="newsit" action="<?php echo URLROOT; ?>/situacoes/new" method="post">                
                 
                 
                 <!--situacao-->        
@@ -30,7 +30,7 @@
                 <!-- ativo na fila -->
                 <div class="row">
                     
-                    <!--termos-->
+                    <!--SITUACAO-->
                     <div class="form-group col-12">               
                         
                         <strong><b class="obrigatorio">*</b> Ativo na fila?</strong>
@@ -86,4 +86,30 @@
     </div>
 </div>
 <?php require APPROOT . '/views/inc/footer.php';?>
+
+<script>  
+ $(document).ready(function(){
+        $('#newsit').validate({
+            rules : {	
+                descricao : {
+                    required : true,
+                    minlength : 6,
+                },		
+                ativo : {
+                    required : true
+                }
+            },
+
+            messages : {
+                descricao : {
+                    required : 'Por favor informe a situação.',
+                    minlength : 'A situação deve ter, no mínimo, 6 caracteres.'
+                },			
+                ativo : {
+                    required : 'Por favor se ativo na fila.'
+                }
+            }
+        });
+});
+</script>
 

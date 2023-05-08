@@ -6,10 +6,10 @@
         <div class="card card-body bg-ligth mt-5">
             <h2>Registrar uma etapa</h2>
             <p>Por favor informe os dados da nova etapa</p>
-            <form action="<?php echo URLROOT; ?>/etapas/new" method="post">                
+            <form id="newetapa" action="<?php echo URLROOT; ?>/etapas/new" method="post">                
                 <!--DESCRIÇÃO-->
                 <div class="form-group">
-                <label for="descricao">Descrição: <sup>*</sup></label>
+                <label for="descricao"><b class="obrigatorio">*</b> Descrição: </label>
                 <!--is-invalid é uma classe do bootstrap que deixa o texto em vermelho então verificamos se tem valor no name_err se sim aplicamos essa classe-->
                 <input type="text" name="descricao" class="form-control form-control-lg <?php echo (!empty($data
                 ['descricao_err'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['descricao']; ?>">
@@ -17,14 +17,14 @@
                 </div>
                 <!--DATA INICIAL-->
                 <div class="form-group">
-                <label for="data_ini">Data Inicial: <sup>*</sup></label>               
+                <label for="data_ini"><b class="obrigatorio">*</b> Data Inicial: </label>               
                 <input type="date" name="data_ini" class="form-control form-control-lg <?php echo (!empty($data
                 ['data_ini_err'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['data_ini']; ?>">
                 <span class="invalid-feedback"><?php echo $data['data_ini_err']; ?></span>
                 </div>
                 <!--DATA FINAL-->
                 <div class="form-group">
-                <label for="data_fin">Data Final: <sup>*</sup></label>               
+                <label for="data_fin"><b class="obrigatorio">*</b>Data Final: </label>               
                 <input type="date" name="data_fin" class="form-control form-control-lg <?php echo (!empty($data
                 ['data_fin_err'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['data_fin']; ?>">
                 <span class="invalid-feedback"><?php echo $data['data_fin_err']; ?></span>
@@ -41,3 +41,36 @@
     </div>
 </div>
 <?php require APPROOT . '/views/inc/footer.php';?>
+
+<script>  
+ $(document).ready(function(){
+        $('#newetapa').validate({
+            rules : {	
+                descricao : {
+                    required : true,
+                    minlength : 6,
+                },		
+                data_ini : {
+                    required : true
+                },
+                data_fin : {
+                    required : true                    
+                }
+            },
+
+            messages : {
+                descricao : {
+                    required : 'Por favor informe o nome do usuário.',
+                    minlength : 'A senha deve ter, no mínimo, 6 caracteres.'
+                },			
+                data_ini : {
+                    required : 'Por favor informe seu email.'
+                },
+                data_fin : {
+                    required : 'Por favor informe sua senha.',
+                    minlength : 'A senha deve ter, no mínimo, 3 caracteres.'
+                }
+            }
+        });
+});
+</script>

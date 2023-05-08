@@ -19,6 +19,16 @@
                 die();
             } 
 
+
+            //se o usuário for admin ou user eu pego todas as escolas
+            if(isAdmin() || isUser()){                    
+                $data['escolas'] = $this->usuarioEscolaModel->getAllEscolas();                 
+            // se não eu pego só as escolaspages/login cadastradas para o usuário    
+            } else {
+                $data['escolas'] = $this->usuarioEscolaModel->getEscolasDoUsuario($user_id);
+            } 
+
+
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -27,14 +37,16 @@
                 $data['post'] = [
                     'escola_id' => ($_POST['escola_id']),                 
                     'escola_id_err' => ''                   
-                ];                
-              
+                ];   
+                
+                              
                 
                 // Valida escola_id
                 if(empty($data['post']['escola_id']) || $data['post']['escola_id'] == 'NULL'){
                     $data['post']['escola_id_err'] = 'Por favor informe a escola';
                 } 
 
+                
                 if(                    
                     empty($data['post']['escola_id_err'])
                 ){
@@ -50,30 +62,25 @@
                         }
                     } else {
                         $data['etapas'] = $this->etapaModel->getEtapas();
-                    }   
-                    //die(var_dump($data['etapas']));
+                    }  
                     $this->view('escolavagas/vagas', $data);
-                } else {                    
-                    if($data['escolas'] = $this->usuarioEscolaModel->getEscolasDoUsuario($user_id)){
-                        $this->view('escolavagas/index', $data);
-                    }
+                } else { 
+                    $this->view('escolavagas/index', $data);
                 }
 
 
             } else {
-                if(isAdmin() || isUser()){                    
-                    $data['escolas'] = $this->usuarioEscolaModel->getAllEscolas();                 
-                    $this->view('escolavagas/index', $data);
-                } else if($data['escolas'] = $this->usuarioEscolaModel->getEscolasDoUsuario($user_id)){
+                if($data['escolas']){                    
                     $this->view('escolavagas/index', $data);
                 } else {                                 
                     $this->view('usuarioescolas/index');
                 }  
-            }
-
-                        
+            }         
              
         }
+
+
+        
 
         public function vagas($escola_id){
                       

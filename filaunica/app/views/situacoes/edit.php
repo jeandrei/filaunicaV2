@@ -6,7 +6,7 @@
         <div class="card card-body bg-ligth mt-5">
             <h2>Editar uma situação</h2>
             <p>Por favor informe os dados da situação</p>
-            <form action="<?php echo URLROOT; ?>/situacoes/edit/<?php echo $data['id'];?>" method="post">                
+            <form id="editsit" action="<?php echo URLROOT; ?>/situacoes/edit/<?php echo $data['id'];?>" method="post">                
                 
                 
                 <!--situacao-->        
@@ -86,4 +86,30 @@
     </div>
 </div>
 <?php require APPROOT . '/views/inc/footer.php';?>
+
+<script>  
+ $(document).ready(function(){
+        $('#editsit').validate({
+            rules : {	
+                descricao : {
+                    required : true,
+                    minlength : 6,
+                },		
+                ativo : {
+                    required : true
+                }
+            },
+
+            messages : {
+                descricao : {
+                    required : 'Por favor informe a situação.',
+                    minlength : 'A situação deve ter, no mínimo, 6 caracteres.'
+                },			
+                ativo : {
+                    required : 'Por favor se ativo na fila.'
+                }
+            }
+        });
+});
+</script>
 

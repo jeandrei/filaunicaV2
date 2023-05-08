@@ -7,7 +7,7 @@
         <div class="card card-body bg-ligth mt-5">
             <h2>Registrar uma escola</h2>
             <p>Por favor informe os dados da nova escola</p>
-            <form action="<?php echo URLROOT; ?>/escolas/new" method="post">                
+            <form id="newescola" action="<?php echo URLROOT; ?>/escolas/new" method="post">                
                 
                 
                 <!--nome-->        
@@ -73,9 +73,9 @@
                     <select 
                         name="bairro_id" 
                         id="bairro_id" 
-                        class="form-control"                                        
+                        class="form-select <?php echo (!empty($data['bairro_id_err'])) ? 'is-invalid' : ''; ?>"                                
                     >
-                            <option value="NULL">Selecione um Bairro</option>
+                            <option value="null">Selecione um Bairro</option>
                             <?php                                                 
                             foreach($data['bairros'] as $bairro) : ?> 
                                 <option value="<?php echo $bairro->id; ?>"
@@ -133,3 +133,41 @@
 </div>
 <?php require APPROOT . '/views/inc/footer.php';?>
 
+<script>  
+ $(document).ready(function(){
+        $('#newescola').validate({
+            rules : {	
+                nome : {
+                    required : true,
+                    minlength : 6,
+                },		
+                logradouro : {
+                    required : true
+                },		
+                bairro_id : {
+                    selectone: "null"
+                },
+                emAtividade : {
+                    required: true
+                }
+                
+            },
+
+            messages : {
+                nome : {
+                    required : 'Por favor informe o nome do usuário.',
+                    minlength : 'A senha deve ter, no mínimo, 6 caracteres.'
+                },			
+                logradouro : {
+                    required : 'Por favor informe seu email.'
+                },
+                bairro_id : {
+                    selectone: 'Por favor informe o bairro.'
+                },
+                emAtividade : {
+                    required : 'Por favor informe se unidade ativa.'
+                }
+            }
+        });
+});
+</script>

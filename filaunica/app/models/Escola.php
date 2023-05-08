@@ -124,7 +124,11 @@
         }
 
          // Deleta escola por id
-         public function delete($id){            
+         public function delete($id){ 
+            //apago todo o quadro de vagas da escola primeiro
+            if(!$this->deleteQuadroVagasEscola($id)){
+                return false;
+            }
             
             $this->db->query('DELETE FROM escola WHERE id = :id');
             // Bind value
@@ -139,6 +143,22 @@
                 return false;
             }
         } 
+
+
+        public function deleteQuadroVagasEscola($escola_id){
+            $this->db->query('DELETE FROM escola_vagas WHERE escola_id = :escola_id');
+            // Bind value
+            $this->db->bind(':escola_id', $escola_id);
+
+            $row = $this->db->execute();
+
+            // Check row
+            if($this->db->rowCount() > 0){
+                return true;
+            } else {
+                return false;
+            }
+        }
         
         public function atualizaSituacao($id,$situacao){            
             
