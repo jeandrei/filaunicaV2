@@ -27,7 +27,7 @@
 
             $options = array(
                 'results_per_page' => 10,
-                'url' => URLROOT . '/users/index.php?page=*VAR*&name=' . $_GET['name'] .'&type'. $_GET['type'],
+                'url' => URLROOT . '/users/index.php?page=*VAR*&name=' . $_GET['name'] .'&type='. $_GET['type'],
                 'using_bound_params' => true,
                 'named_params' => array(
                                     ':name' => $_GET['name'],
@@ -269,7 +269,7 @@
                 if($data['type'] <> 'sec'){
                     if(!$_POST['confirma']){
                         if($this->usuarioEscolaModel->getEscolasDoUsuario($id)){
-                            $data['alerta'] = 'Este usuário possui vinculos com escola e a atualização para um tipo diferente requer a remoção dos vinculos.';                        
+                            $data['alerta'] = 'Este usuário possui vinculos com escolas e a atualização para um tipo diferente requer a remoção dos vinculos.';                        
                         }
                     }
                 }
@@ -377,7 +377,7 @@
                        throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
                    }
                } catch (Exception $e) {
-                   $erro = 'Erro: '.  $e->getMessage(). "\n";
+                   $erro = 'Erro: '.  $e->getMessage();
                    flash('message', $erro,'error');
                    $this->view('users/index');
                }                

@@ -611,7 +611,7 @@
         throw new Exception('Ops! Algo deu errado ao tentar gravar os dados!');
       }    
     } catch (Exception $e) {
-      $erro = 'Erro: '.  $e->getMessage(). "\n";
+      $erro = 'Erro: '.  $e->getMessage();
       $json_ret = array(
               'classe'=>'text-danger', 
               'message'=>$erro,

@@ -2,7 +2,13 @@
 <?php include 'header.php'; ?>
 <!-- COLOCO UM BACKGROUND CINZA E CRIAMOS UM CONTAINDER COM MARGEN SUPERIOR DE 90PX -->
 <body style="background-color:#DCDCDC">
-    <div class="container" style="margin-top: 90px;">  
+    <div class="container" style="margin-top: 90px;"> 
+    
+    <?php if($data['cadastroDuplicado']) : ?>
+        <div class="alert alert-warning" role="alert">
+        Ops! Já existe um cadastro com esse nome e data de nascimento! Deseja confirmar?
+        </div>
+    <?php endif; ?>
 
     
     <?php 

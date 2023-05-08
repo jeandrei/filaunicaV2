@@ -122,7 +122,7 @@
                             $confirmaDuplicado = true;
                             $data['nome_err'] = '';
                         } else {
-                            flash('fila-erro','Ops! Já existe um cadastro com esse nome e data de nascimento! Deseja confirmar?','alert alert-warning');
+                            //mando para o formulário que já tem um cadastro desses
                             $data['cadastroDuplicado'] = true;
                             $confirmaDuplicado = false;
                         }  

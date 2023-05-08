@@ -29,7 +29,7 @@
                         'numero' => ($row->numero) ? $row->numero : '',
                         'emAtividade' => ($row->emAtividade == 1) ? 'Sim' : 'Não'
                     ];       
-                } 
+                }               
                 $this->view('escolas/index', $data);
             } else {                                 
                 $this->view('escolas/index');
@@ -269,7 +269,8 @@
         }       
         
 
-        public function delete($id){
+        public function delete($id){            
+           
             
             if((!isLoggedIn())){ 
                 flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
@@ -286,30 +287,51 @@
                 $erro = 'ID Inválido!'; 
             } else if (!$data['escola'] = $this->escolaModel->getEscolaById($id)){
                 $erro = 'ID inexistente';
-            } 
+            }
+            
+
+            if($escolas = $this->escolaModel->getEscolas()){
+                               
+                foreach($escolas as $row){                    
+                    $data[] = [
+                        'id' => $row->id,
+                        'nome' => $row->nome,
+                        'bairro_id' => $row->bairro_id,
+                        'bairro' => $this->bairroModel->getBairroById($row->bairro_id)->nome,
+                        'logradouro' => $row->logradouro,                    
+                        'numero' => ($row->numero) ? $row->numero : '',
+                        'emAtividade' => ($row->emAtividade == 1) ? 'Sim' : 'Não'
+                    ];       
+                }              
+           
+            }
+            
+           
                   
             
              //esse $_POST['delete'] vem lá do view('confirma');
-            if(isset($_POST['delete'])){
+            if(isset($_POST['delete'])){  
+                
+               
                 
                 if($erro){
-                    flash('message', $erro , 'error'); 
-                    $data['escolas'] = $this->escolaModel->getEscolas();   
+                    flash('message', $erro , 'error');                     
                     $this->view('escolas/index',$data);
                     die();
                 }                   
 
-                try {              
+                try { 
                     if($this->escolaModel->delete($id)){                        
                         flash('message', 'Registro excluido com sucesso!', 'success'); 
                         redirect('escolas/index');
                     } else {
                         throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
                     }
-                } catch (Exception $e) {
-                    $erro = 'Erro: '.  $e->getMessage(). "\n";
-                    flash('message', $erro,'error');
-                    $this->view('escolas/index');
+                } catch (Exception $e) {                    
+                    $erro = 'Erro: '.  $e->getMessage();                   
+                    flash('message', $erro,'error');                    
+                    redirect('escolas/index',$data);
+                    die();
                 }                
            } else {  
             //se existe protocolos na fila dessa etapa aviso o usuário        

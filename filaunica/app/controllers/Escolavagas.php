@@ -171,7 +171,7 @@
                         $this->view('escolavagas/vagas', $data);
 
                     } catch (Exception $e) {                        
-                        $erro = 'Erro: '.  $e->getMessage(). "\n";
+                        $erro = 'Erro: '.  $e->getMessage();
                         flash('message', $erro,'error');
                         $this->view('escolasvagas/vagas',$data);
                     }                      

@@ -140,7 +140,7 @@
                        throw new Exception('Ops! Algo deu errado ao tentar excluir os dados!');
                    }
                } catch (Exception $e) {
-                   $erro = 'Erro: '.  $e->getMessage(). "\n";
+                   $erro = 'Erro: '.  $e->getMessage();
                    flash('message', $erro,'error');
                    $this->view('usuarioescolas/index');
                }                

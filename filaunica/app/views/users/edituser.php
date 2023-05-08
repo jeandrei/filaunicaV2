@@ -48,7 +48,8 @@
                     <label for="password"><b class="obrigatorio">*</b>Senha: </label>               
                     <input 
                         type="password" 
-                        name="password" 
+                        name="password"
+                        id="password"  
                         class="form-control form-control-lg <?php echo (!empty($data
                     ['password_err'])) ? 'is-invalid' : ''; ?>" 
                         value="<?php echo (!empty($data['password'])) ? $data['password'] : ''; ?>">
@@ -63,6 +64,7 @@
                     <input 
                         type="password" 
                         name="confirm_password" 
+                        id="confirm_password" 
                         class="form-control form-control-lg <?php echo (!empty($data
                     ['confirm_password_err'])) ? 'is-invalid' : ''; ?>" 
                         value="<?php echo (!empty($data['confirm_password'])) ? $data['confirm_password'] : ''; ?>">
