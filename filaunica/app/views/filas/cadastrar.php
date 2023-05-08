@@ -490,8 +490,7 @@
                                 >
                                     <option value="">Selecione o turno desejado</option>
                                     <option value="1" <?php echo $data['opcao_turno'] == '1' ? 'selected':'';?>>Matutino</option>
-                                    <option value="2" <?php echo $data['opcao_turno'] == '2' ? 'selected':'';?>>Vespertino</option>                                                                                                                   
-                                    <option value="3" <?php echo $data['opcao_turno'] == '3' ? 'selected':'';?>>Integral</option> 
+                                    <option value="2" <?php echo $data['opcao_turno'] == '2' ? 'selected':'';?>>Vespertino</option>                                        
                                             
                                 </select>                                           
                                 <span class="text-danger">
